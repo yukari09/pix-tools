@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>免费九宫格切图工具 — 图片一键切成9格发朋友圈 | PixTools</title>
+<meta name="description" content="免费在线九宫格切图:把一张图一键切成3×3(或2×2/4×4)九宫格,适合朋友圈、小红书、Instagram发图。浏览器本地处理,图片不上传服务器,隐私安全。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://pixtools.morio.cc/nine-grid.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="免费九宫格切图工具 — 朋友圈九宫格在线制作">
+<meta property="og:description" content="把一张图一键切成3×3九宫格,朋友圈、小红书、Instagram发图神器。浏览器本地处理,图片不上传。">
+<meta property="og:url" content="https://pixtools.morio.cc/nine-grid.html">
+<meta property="og:site_name" content="PixTools 图片工具箱">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "九宫格切图工具",
+  "url": "https://pixtools.morio.cc/nine-grid.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+  "description": "在线把图片切成3×3九宫格,朋友圈小红书发图,浏览器本地处理不上传服务器。"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://pixtools.morio.cc/"},
+    {"@type": "ListItem", "position": 2, "name": "九宫格切图", "item": "https://pixtools.morio.cc/nine-grid.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "九宫格切图是什么意思？",
+      "acceptedAnswer": {"@type": "Answer", "text": "九宫格切图是把一张大图平均切成 3×3 共 9 张小图,发朋友圈或小红书时按顺序发出,主页会拼回一张完整大图,视觉冲击力更强。"}
+    },
+    {
+      "@type": "Question",
+      "name": "九宫格切图需要上传图片到服务器吗？",
+      "acceptedAnswer": {"@type": "Answer", "text": "不需要。PixTools 的九宫格切图完全在浏览器本地运行,图片不会上传到任何服务器,处理完成后可以放心删除或分享。"}
+    },
+    {
+      "@type": "Question",
+      "name": "朋友圈九宫格用什么尺寸的图最好？",
+      "acceptedAnswer": {"@type": "Answer", "text": "推荐使用 3:3 等宽高比例的大图(如 1080×1080),切成 9 张后每张正好是 1:1 方形,发朋友圈时不会被压缩变形。"}
+    },
+    {
+      "@type": "Question",
+      "name": "九宫格切图是免费的吗？",
+      "acceptedAnswer": {"@type": "Answer", "text": "完全免费,不限次数、无需注册登录、无水印,还支持 2×2 和 4×4 网格。"}
+    }
+  ]
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+    <nav class="nav">
+      <a href="/removebg.html">抠图</a>
+      <a href="/compress.html">压缩</a>
+      <a href="/convert.html">转换</a>
+      <a href="/resize.html">缩放</a>
+      <a href="/nine-grid.html">九宫格</a>
+      <a href="/watermark.html">水印</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container tool-page">
+  <nav class="breadcrumb">
+    <a href="/">首页</a><span class="sep">›</span><span>九宫格切图</span>
+  </nav>
+  <h1>九宫格切图工具</h1>
+  <p class="tool-blurb">把一张大图一键切成 3×3 九宫格,朋友圈、小红书、Instagram 发图拼出完整大图效果。支持 2×2、3×3、4×4 网格,全部在浏览器本地完成,图片不上传服务器。</p>
+
+  <div class="msg-error"></div>
+  <div class="status" id="status">
+    <div class="spinner"></div>
+    <div class="progress-track"><div class="progress-bar" id="statusBar"></div></div>
+    <div class="status-text" id="statusText">切图中…</div>
+  </div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP · 推荐正方形大图</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="grid">网格</label>
+        <select id="grid">
+          <option value="3">3×3 九宫格(推荐)</option>
+          <option value="2">2×2 四宫格</option>
+          <option value="4">4×4 十六格</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="outFmt">输出格式</label>
+        <select id="outFmt">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnZip">⬇ 下载全部(ZIP)</button>
+    </div>
+    <div class="compare-box" style="margin-bottom:16px">
+      <h3>切图结果预览</h3>
+      <div id="gridPreview" style="display:grid;gap:4px;background:#f1f5f9;padding:8px;border-radius:8px"></div>
+      <div class="compare-meta" id="metaResult"></div>
+    </div>
+  </div>
+</main>
+
+<section class="container">
+  <div class="faq-section">
+    <h2>九宫格切图常见问题</h2>
+    <p class="faq-sub">关于朋友圈九宫格的常见疑问,这里一次说清。</p>
+    <div class="faq-item open">
+      <button class="faq-q">九宫格切图是什么意思?<span class="arrow">▼</span></button>
+      <div class="faq-a">九宫格切图是把一张大图平均切成 3×3 共 9 张小图,发朋友圈或小红书时按顺序发出,主页会拼回一张完整大图,视觉冲击力更强。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">九宫格切图需要上传图片到服务器吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">不需要。PixTools 的九宫格切图完全在浏览器本地运行,图片不会上传到任何服务器,处理完成后可以放心删除或分享。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">朋友圈九宫格用什么尺寸的图最好?<span class="arrow">▼</span></button>
+      <div class="faq-a">推荐使用 3:3 等宽高比例的大图(如 1080×1080),切成 9 张后每张正好是 1:1 方形,发朋友圈时不会被压缩变形。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">九宫格切图是免费的吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">完全免费,不限次数、无需注册登录、无水印,还支持 2×2 和 4×4 网格。</div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>你可能还需要</h2>
+    <div class="related-links">
+      <a href="/removebg.html">✂ AI 一键抠图</a>
+      <a href="/compress.html">🗜 图片压缩</a>
+      <a href="/convert.html">⇄ 图片格式转换</a>
+      <a href="/resize.html">⤢ 图片缩放</a>
+      <a href="/watermark.html">🖋 图片加水印</a>
+      <a href="/filters.html">◐ 图片滤镜</a>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      <div class="footer-col">
+        <h3>图片工具</h3>
+        <a href="/removebg.html">AI 抠图去背景</a>
+        <a href="/compress.html">在线图片压缩</a>
+        <a href="/convert.html">图片格式转换</a>
+        <a href="/resize.html">图片缩放改尺寸</a>
+      </div>
+      <div class="footer-col">
+        <h3>更多工具</h3>
+        <a href="/nine-grid.html">九宫格切图</a>
+        <a href="/watermark.html">图片加水印</a>
+        <a href="/filters.html">图片滤镜美化</a>
+      </div>
+      <div class="footer-col">
+        <h3>热门搜索</h3>
+        <a href="/removebg.html">在线抠图</a>
+        <a href="/compress.html">图片压缩工具</a>
+        <a href="/convert.html">WebP 转 JPG</a>
+        <a href="/nine-grid.html">朋友圈九宫格</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script>
+let cachedImg = null;
+let pieces = [];
+
+async function handleFile(file) {
+  clearError();
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('workArea').classList.remove('hidden');
+  const img = await loadImage(file);
+  cachedImg = img;
+  cut();
+}
+
+async function cut() {
+  const n = parseInt(document.getElementById('grid').value);
+  const outFmt = document.getElementById('outFmt').value;
+  const ext = outFmt === 'image/jpeg' ? 'jpg' : outFmt === 'image/webp' ? 'webp' : 'png';
+  const status = document.getElementById('status');
+  status.classList.add('show');
+  document.getElementById('statusText').textContent = `切成 ${n}×${n} 网格…`;
+  document.getElementById('statusBar').style.width = '40%';
+
+  const w = cachedImg.naturalWidth, h = cachedImg.naturalHeight;
+  const pw = Math.floor(w / n), ph = Math.floor(h / n);
+  pieces = [];
+  const gridEl = document.getElementById('gridPreview');
+  gridEl.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+  gridEl.innerHTML = '';
+
+  for (let r = 0; r < n; r++) {
+    for (let c = 0; c < n; c++) {
+      const canvas = document.createElement('canvas');
+      canvas.width = pw; canvas.height = ph;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(cachedImg, c * pw, r * ph, pw, ph, 0, 0, pw, ph);
+      const blob = await new Promise((res) => canvas.toBlob(res, outFmt, 0.92));
+      pieces.push(blob);
+      const box = document.createElement('div');
+      box.style.aspectRatio = '1/1';
+      box.style.overflow = 'hidden';
+      box.style.borderRadius = '4px';
+      const im = document.createElement('img');
+      im.src = URL.createObjectURL(blob);
+      im.style.width = '100%'; im.style.display = 'block';
+      box.appendChild(im);
+      gridEl.appendChild(box);
+    }
+  }
+  document.getElementById('statusBar').style.width = '100%';
+  setTimeout(() => status.classList.remove('show'), 300);
+  document.getElementById('metaResult').textContent =
+    `${n}×${n} = ${pieces.length} 张 · 每张 ${pw}×${ph}px · 共 ${fmtBytes(pieces.reduce((a, b) => a + b.size, 0))}`;
+}
+
+document.getElementById('grid').addEventListener('change', () => { if (cachedImg) cut(); });
+document.getElementById('outFmt').addEventListener('change', () => { if (cachedImg) cut(); });
+
+document.getElementById('btnZip').addEventListener('click', async () => {
+  if (!pieces.length) return;
+  const { default: JSZip } = await import('https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm');
+  const zip = new JSZip();
+  const n = parseInt(document.getElementById('grid').value);
+  const outFmt = document.getElementById('outFmt').value;
+  const ext = outFmt === 'image/jpeg' ? 'jpg' : outFmt === 'image/webp' ? 'webp' : 'png';
+  pieces.forEach((blob, i) => {
+    const r = Math.floor(i / n) + 1, c = (i % n) + 1;
+    zip.file(`nine-grid_${r}-${c}.${ext}`, blob);
+  });
+  const zblob = await zip.generateAsync({ type: 'blob' });
+  download(zblob, 'nine-grid.zip');
+});
+
+setupDropzone('dropzone', 'fileInput', handleFile);
+document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.classList.toggle('open');
+}));
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在线图片滤镜 — 亮度对比度饱和度调节、黑白、复古 | PixTools</title>
+<title>在线图片滤镜 — 亮度对比度调节、黑白复古效果 | PixTools</title>
 <meta name="description" content="免费在线图片滤镜工具:调节亮度、对比度、饱和度、色温,一键黑白、复古、模糊效果,实时预览。浏览器本地处理,图片不上传服务器。">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://pixtools.morio.cc/filters.html">
@@ -20,7 +20,63 @@
   "description": "在线图片滤镜与调色工具,本地处理不上传服务器。"
 }
 </script>
-</head>
+<meta property="og:type" content="website">
+<meta property="og:title" content="在线图片滤镜 — 亮度对比度调节、黑白复古效果 | PixTools">
+<meta property="og:description" content="免费在线图片滤镜工具:亮度、对比度、饱和度调节,一键黑白、复古、模糊效果,实时预览,浏览器本地处理。">
+<meta property="og:url" content="https://pixtools.morio.cc/filters.html">
+<meta property="og:site_name" content="PixTools 图片工具箱">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://pixtools.morio.cc/"},
+    {"@type": "ListItem", "position": 2, "name": "在线图片滤镜", "item": "https://pixtools.morio.cc/filters.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "有哪些滤镜效果?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "支持亮度、对比度、饱和度、模糊四项手动调节,以及黑白、复古、反色、鲜艳、褪色五组一键预设,适合快速给照片调风格。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "滤镜处理会压缩画质吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "处理以 PNG 无损格式导出,不会二次压缩,适合需要精修后继续编辑的场景。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "可以恢复原图吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "可以。原图始终保留在左侧预览区,重新上传即可从头开始,调整滑块会实时重新渲染。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "适合处理什么图?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "头像、产品图、照片调色都可以,黑白和复古预设特别适合做朋友圈和社交媒体配图。"
+   }
+  }
+ ]
+}
+</script></head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
@@ -30,12 +86,16 @@
       <a href="/compress.html">压缩</a>
       <a href="/convert.html">转换</a>
       <a href="/resize.html">缩放</a>
-      <a href="/filters.html">滤镜</a>
+      <a href="/nine-grid.html">九宫格</a>
+      <a href="/watermark.html">水印</a>
     </nav>
   </div>
 </header>
 
 <main class="container tool-page">
+  <nav class="breadcrumb">
+    <a href="/">首页</a><span class="sep">›</span><span>在线图片滤镜</span>
+  </nav>
   <h1>◐ 在线图片滤镜</h1>
   <p class="tool-blurb">调节亮度、对比度、饱和度,一键黑白、复古、模糊、反色效果。实时预览,本地处理不上传服务器。</p>
 
@@ -97,11 +157,74 @@
       </div>
     </div>
   </div>
-</main>
+<section class="container">
+  <div class="faq-section">
+    <h2>在线图片滤镜常见问题</h2>
+    <p class="faq-sub">关于在线图片滤镜的常见疑问,这里一次说清。</p>
+    <div class="faq-item open">
+      <button class="faq-q">有哪些滤镜效果?<span class="arrow">▼</span></button>
+      <div class="faq-a">支持亮度、对比度、饱和度、模糊四项手动调节,以及黑白、复古、反色、鲜艳、褪色五组一键预设,适合快速给照片调风格。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">滤镜处理会压缩画质吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">处理以 PNG 无损格式导出,不会二次压缩,适合需要精修后继续编辑的场景。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">可以恢复原图吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">可以。原图始终保留在左侧预览区,重新上传即可从头开始,调整滑块会实时重新渲染。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">适合处理什么图?<span class="arrow">▼</span></button>
+      <div class="faq-a">头像、产品图、照片调色都可以,黑白和复古预设特别适合做朋友圈和社交媒体配图。</div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>你可能还需要</h2>
+    <div class="related-links">
+      <a href="/removebg.html">✂ AI 一键抠图</a>
+      <a href="/compress.html">🗜 图片压缩</a>
+      <a href="/convert.html">⇄ 图片格式转换</a>
+      <a href="/resize.html">⤢ 图片缩放</a>
+      <a href="/nine-grid.html">▦ 九宫格切图</a>
+      <a href="/watermark.html">🖋 图片加水印</a>
+      <a href="/filters.html">◐ 图片滤镜</a>
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      <div class="footer-col">
+        <h3>图片工具</h3>
+        <a href="/removebg.html">AI 抠图去背景</a>
+        <a href="/compress.html">在线图片压缩</a>
+        <a href="/convert.html">图片格式转换</a>
+        <a href="/resize.html">图片缩放改尺寸</a>
+      </div>
+      <div class="footer-col">
+        <h3>更多工具</h3>
+        <a href="/nine-grid.html">九宫格切图</a>
+        <a href="/watermark.html">图片加水印</a>
+        <a href="/filters.html">图片滤镜美化</a>
+      </div>
+      <div class="footer-col">
+        <h3>热门搜索</h3>
+        <a href="/removebg.html">在线抠图</a>
+        <a href="/compress.html">图片压缩工具</a>
+        <a href="/convert.html">WebP 转 JPG</a>
+        <a href="/nine-grid.html">朋友圈九宫格</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
   </div>
 </footer>
 
@@ -200,6 +323,11 @@ document.getElementById('btnExport').addEventListener('click', () => {
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);
+</script>
+<script>
+document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.classList.toggle('open');
+}));
 </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>图片格式转换 — PNG/JPG/WebP 在线互转 | PixTools</title>
+<title>图片格式转换 — WebP转JPG/PNG互转在线工具 | PixTools</title>
 <meta name="description" content="免费在线图片格式转换:PNG、JPG、WebP 一键互转。WebP 转 JPG、JPG 转 PNG、图片转 WebP 缩小体积。浏览器本地转换,图片不上传服务器。">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://pixtools.morio.cc/convert.html">
@@ -20,7 +20,63 @@
   "description": "PNG/JPG/WebP 图片格式在线互转,本地转换不上传服务器。"
 }
 </script>
-</head>
+<meta property="og:type" content="website">
+<meta property="og:title" content="图片格式转换 — WebP转JPG/PNG互转在线工具 | PixTools">
+<meta property="og:description" content="免费在线图片格式转换:PNG、JPG、WebP 一键互转,包含 WebP 转 JPG。浏览器本地转换,图片不上传服务器。">
+<meta property="og:url" content="https://pixtools.morio.cc/convert.html">
+<meta property="og:site_name" content="PixTools 图片工具箱">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://pixtools.morio.cc/"},
+    {"@type": "ListItem", "position": 2, "name": "图片格式转换", "item": "https://pixtools.morio.cc/convert.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "WebP 转 JPG 怎么做?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "在 PixTools 格式转换页上传 WebP 图片,目标格式选择 JPG,点击导出即可,一次完成,不需要装任何软件。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "格式转换会压缩图片吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "转换时使用高质量编码(默认 90%),像素尺寸和主体内容完全保留,只有 JPG/WebP 这类有损格式会按质量参数编码。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "JPG 能转成透明 PNG 吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "JPG 本身不含透明通道,转 PNG 后透明区域仍是白色背景。真正需要透明背景建议先使用 AI 抠图工具去除背景。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "转换需要上传到服务器吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "不需要。所有转换都在浏览器本地完成,支持 PNG、JPG、WebP 三种格式互转。"
+   }
+  }
+ ]
+}
+</script></head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
@@ -30,12 +86,16 @@
       <a href="/compress.html">压缩</a>
       <a href="/convert.html">转换</a>
       <a href="/resize.html">缩放</a>
-      <a href="/filters.html">滤镜</a>
+      <a href="/nine-grid.html">九宫格</a>
+      <a href="/watermark.html">水印</a>
     </nav>
   </div>
 </header>
 
 <main class="container tool-page">
+  <nav class="breadcrumb">
+    <a href="/">首页</a><span class="sep">›</span><span>图片格式转换</span>
+  </nav>
   <h1>⇄ 图片格式转换</h1>
   <p class="tool-blurb">PNG、JPG、WebP 三种格式一键互转:WebP 转 JPG(兼容老软件)、JPG 转 PNG(透明底需求)、任意转 WebP(体积最小)。本地转换,图片不上传服务器。</p>
 
@@ -82,11 +142,74 @@
       </div>
     </div>
   </div>
-</main>
+<section class="container">
+  <div class="faq-section">
+    <h2>图片格式转换常见问题</h2>
+    <p class="faq-sub">关于图片格式转换的常见疑问,这里一次说清。</p>
+    <div class="faq-item open">
+      <button class="faq-q">WebP 转 JPG 怎么做?<span class="arrow">▼</span></button>
+      <div class="faq-a">在 PixTools 格式转换页上传 WebP 图片,目标格式选择 JPG,点击导出即可,一次完成,不需要装任何软件。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">格式转换会压缩图片吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">转换时使用高质量编码(默认 90%),像素尺寸和主体内容完全保留,只有 JPG/WebP 这类有损格式会按质量参数编码。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">JPG 能转成透明 PNG 吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">JPG 本身不含透明通道,转 PNG 后透明区域仍是白色背景。真正需要透明背景建议先使用 AI 抠图工具去除背景。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">转换需要上传到服务器吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">不需要。所有转换都在浏览器本地完成,支持 PNG、JPG、WebP 三种格式互转。</div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>你可能还需要</h2>
+    <div class="related-links">
+      <a href="/removebg.html">✂ AI 一键抠图</a>
+      <a href="/compress.html">🗜 图片压缩</a>
+      <a href="/convert.html">⇄ 图片格式转换</a>
+      <a href="/resize.html">⤢ 图片缩放</a>
+      <a href="/nine-grid.html">▦ 九宫格切图</a>
+      <a href="/watermark.html">🖋 图片加水印</a>
+      <a href="/filters.html">◐ 图片滤镜</a>
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      <div class="footer-col">
+        <h3>图片工具</h3>
+        <a href="/removebg.html">AI 抠图去背景</a>
+        <a href="/compress.html">在线图片压缩</a>
+        <a href="/convert.html">图片格式转换</a>
+        <a href="/resize.html">图片缩放改尺寸</a>
+      </div>
+      <div class="footer-col">
+        <h3>更多工具</h3>
+        <a href="/nine-grid.html">九宫格切图</a>
+        <a href="/watermark.html">图片加水印</a>
+        <a href="/filters.html">图片滤镜美化</a>
+      </div>
+      <div class="footer-col">
+        <h3>热门搜索</h3>
+        <a href="/removebg.html">在线抠图</a>
+        <a href="/compress.html">图片压缩工具</a>
+        <a href="/convert.html">WebP 转 JPG</a>
+        <a href="/nine-grid.html">朋友圈九宫格</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
   </div>
 </footer>
 
@@ -153,6 +276,11 @@ document.getElementById('btnExport').addEventListener('click', () => {
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);
+</script>
+<script>
+document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.classList.toggle('open');
+}));
 </script>
 </body>
 </html>

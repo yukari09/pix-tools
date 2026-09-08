@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>在线图片缩放 — 按比例或指定尺寸调整图片大小 | PixTools</title>
+<title>在线图片缩放 — 按比例或指定尺寸改图片大小 | PixTools</title>
 <meta name="description" content="免费在线图片缩放工具:按百分比或指定宽高缩放图片,支持双线性/双三次插值,无需上传服务器。适合做店铺主图、社交媒体封面等。">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://pixtools.morio.cc/resize.html">
@@ -20,7 +20,63 @@
   "description": "在线按比例或指定尺寸缩放图片,本地处理不上传服务器。"
 }
 </script>
-</head>
+<meta property="og:type" content="website">
+<meta property="og:title" content="在线图片缩放 — 按比例或指定尺寸改图片大小 | PixTools">
+<meta property="og:description" content="免费在线图片缩放工具:按百分比或指定宽高调整图片尺寸,支持高质量插值,浏览器本地处理不上传服务器。">
+<meta property="og:url" content="https://pixtools.morio.cc/resize.html">
+<meta property="og:site_name" content="PixTools 图片工具箱">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://pixtools.morio.cc/"},
+    {"@type": "ListItem", "position": 2, "name": "在线图片缩放", "item": "https://pixtools.morio.cc/resize.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "按百分比缩放和按像素缩放有什么区别?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "按百分比(如 50%)是按原图等比例缩小一半;按像素缩放则指定目标宽或高,适合店铺主图(如 800×800)、社交封面等固定尺寸需求。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "小图放大后会模糊吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "放大时选择高质量(双三次)插值可获得比默认更好的效果,但超过原分辨率的信息无法凭空创造,建议尽量使用原始大图。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "缩放后的图片尺寸是多少?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "工具预览区会实时显示目标尺寸(宽×高),导出时按该尺寸输出,同时可以选择 PNG、JPG、WebP 格式。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "缩放会改变画质吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "缩小通常几乎无感;放大看插值算法。输出 JPG/WebP 时可通过默认高质量编码保持画质。"
+   }
+  }
+ ]
+}
+</script></head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
@@ -30,12 +86,16 @@
       <a href="/compress.html">压缩</a>
       <a href="/convert.html">转换</a>
       <a href="/resize.html">缩放</a>
-      <a href="/filters.html">滤镜</a>
+      <a href="/nine-grid.html">九宫格</a>
+      <a href="/watermark.html">水印</a>
     </nav>
   </div>
 </header>
 
 <main class="container tool-page">
+  <nav class="breadcrumb">
+    <a href="/">首页</a><span class="sep">›</span><span>在线图片缩放</span>
+  </nav>
   <h1>⤢ 在线图片缩放</h1>
   <p class="tool-blurb">按百分比或指定宽高缩放图片,支持放大插值(双三次)保证质量。本地处理,图片不上传服务器。</p>
 
@@ -108,11 +168,74 @@
       </div>
     </div>
   </div>
-</main>
+<section class="container">
+  <div class="faq-section">
+    <h2>在线图片缩放常见问题</h2>
+    <p class="faq-sub">关于在线图片缩放的常见疑问,这里一次说清。</p>
+    <div class="faq-item open">
+      <button class="faq-q">按百分比缩放和按像素缩放有什么区别?<span class="arrow">▼</span></button>
+      <div class="faq-a">按百分比(如 50%)是按原图等比例缩小一半;按像素缩放则指定目标宽或高,适合店铺主图(如 800×800)、社交封面等固定尺寸需求。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">小图放大后会模糊吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">放大时选择高质量(双三次)插值可获得比默认更好的效果,但超过原分辨率的信息无法凭空创造,建议尽量使用原始大图。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">缩放后的图片尺寸是多少?<span class="arrow">▼</span></button>
+      <div class="faq-a">工具预览区会实时显示目标尺寸(宽×高),导出时按该尺寸输出,同时可以选择 PNG、JPG、WebP 格式。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">缩放会改变画质吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">缩小通常几乎无感;放大看插值算法。输出 JPG/WebP 时可通过默认高质量编码保持画质。</div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>你可能还需要</h2>
+    <div class="related-links">
+      <a href="/removebg.html">✂ AI 一键抠图</a>
+      <a href="/compress.html">🗜 图片压缩</a>
+      <a href="/convert.html">⇄ 图片格式转换</a>
+      <a href="/resize.html">⤢ 图片缩放</a>
+      <a href="/nine-grid.html">▦ 九宫格切图</a>
+      <a href="/watermark.html">🖋 图片加水印</a>
+      <a href="/filters.html">◐ 图片滤镜</a>
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      <div class="footer-col">
+        <h3>图片工具</h3>
+        <a href="/removebg.html">AI 抠图去背景</a>
+        <a href="/compress.html">在线图片压缩</a>
+        <a href="/convert.html">图片格式转换</a>
+        <a href="/resize.html">图片缩放改尺寸</a>
+      </div>
+      <div class="footer-col">
+        <h3>更多工具</h3>
+        <a href="/nine-grid.html">九宫格切图</a>
+        <a href="/watermark.html">图片加水印</a>
+        <a href="/filters.html">图片滤镜美化</a>
+      </div>
+      <div class="footer-col">
+        <h3>热门搜索</h3>
+        <a href="/removebg.html">在线抠图</a>
+        <a href="/compress.html">图片压缩工具</a>
+        <a href="/convert.html">WebP 转 JPG</a>
+        <a href="/nine-grid.html">朋友圈九宫格</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
   </div>
 </footer>
 
@@ -203,6 +326,11 @@ document.getElementById('btnExport').addEventListener('click', () => {
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);
+</script>
+<script>
+document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.classList.toggle('open');
+}));
 </script>
 </body>
 </html>

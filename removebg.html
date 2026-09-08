@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 一键抠图 — 在线去背景生成透明 PNG | PixTools</title>
+<title>AI 一键抠图 — 免费在线去背景生成透明PNG | PixTools</title>
 <meta name="description" content="免费在线 AI 抠图工具:一键去除图片背景,生成透明背景 PNG。AI 模型在浏览器本地运行,图片不上传服务器。支持人物、商品、产品图抠图。">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://pixtools.morio.cc/removebg.html">
@@ -20,7 +20,63 @@
   "description": "AI 去除图片背景,生成透明背景 PNG,模型在浏览器本地运行不上传服务器。"
 }
 </script>
-</head>
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI 一键抠图 — 免费在线去背景生成透明PNG | PixTools">
+<meta property="og:description" content="免费在线 AI 抠图工具:一键去除图片背景生成透明 PNG,模型在浏览器本地运行,图片不上传服务器。">
+<meta property="og:url" content="https://pixtools.morio.cc/removebg.html">
+<meta property="og:site_name" content="PixTools 图片工具箱">
+<meta property="og:locale" content="zh_CN">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "首页", "item": "https://pixtools.morio.cc/"},
+    {"@type": "ListItem", "position": 2, "name": "AI 抠图去背景", "item": "https://pixtools.morio.cc/removebg.html"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "AI 抠图是怎么工作的?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "上传图片后,PixTools 会在你的浏览器本地运行 AI 抠图模型(首次需下载约 90MB 模型,之后有缓存),自动识别图片主体并去除背景,输出透明背景 PNG。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "抠图会损坏原图吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "不会。原图只用于本地处理,不会上传、不会修改,结果会另存为新图片,随时可以重新处理。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "抠出来的图可以用在哪里?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "透明背景 PNG 可以用于做头像、电商白底图、贴纸、拼图素材、PPT 插图等场景,边缘质量在网页工具里属于第一梯队。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "手机浏览器可以用吗?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "可以。PixTools 支持任何现代浏览器(Chrome、Edge、Safari、Firefox 及国产浏览器),手机电脑均可使用,无账号无限制。"
+   }
+  }
+ ]
+}
+</script></head>
 <body>
 <header class="site-header">
   <div class="container header-inner">
@@ -30,12 +86,16 @@
       <a href="/compress.html">压缩</a>
       <a href="/convert.html">转换</a>
       <a href="/resize.html">缩放</a>
-      <a href="/filters.html">滤镜</a>
+      <a href="/nine-grid.html">九宫格</a>
+      <a href="/watermark.html">水印</a>
     </nav>
   </div>
 </header>
 
 <main class="container tool-page">
+  <nav class="breadcrumb">
+    <a href="/">首页</a><span class="sep">›</span><span>AI 抠图去背景</span>
+  </nav>
   <h1>✂ AI 一键抠图</h1>
   <p class="tool-blurb">上传图片,AI 自动识别主体并去除背景,生成透明背景 PNG。模型在你的浏览器里本地运行 —— 图片<strong>不会上传到服务器</strong>。</p>
 
@@ -71,11 +131,74 @@
       <button class="btn btn-secondary" id="btnAgain">换一张图片</button>
     </div>
   </div>
-</main>
+<section class="container">
+  <div class="faq-section">
+    <h2>AI 抠图去背景常见问题</h2>
+    <p class="faq-sub">关于AI 抠图去背景的常见疑问,这里一次说清。</p>
+    <div class="faq-item open">
+      <button class="faq-q">AI 抠图是怎么工作的?<span class="arrow">▼</span></button>
+      <div class="faq-a">上传图片后,PixTools 会在你的浏览器本地运行 AI 抠图模型(首次需下载约 90MB 模型,之后有缓存),自动识别图片主体并去除背景,输出透明背景 PNG。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">抠图会损坏原图吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">不会。原图只用于本地处理,不会上传、不会修改,结果会另存为新图片,随时可以重新处理。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">抠出来的图可以用在哪里?<span class="arrow">▼</span></button>
+      <div class="faq-a">透明背景 PNG 可以用于做头像、电商白底图、贴纸、拼图素材、PPT 插图等场景,边缘质量在网页工具里属于第一梯队。</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">手机浏览器可以用吗?<span class="arrow">▼</span></button>
+      <div class="faq-a">可以。PixTools 支持任何现代浏览器(Chrome、Edge、Safari、Firefox 及国产浏览器),手机电脑均可使用,无账号无限制。</div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h2>你可能还需要</h2>
+    <div class="related-links">
+      <a href="/removebg.html">✂ AI 一键抠图</a>
+      <a href="/compress.html">🗜 图片压缩</a>
+      <a href="/convert.html">⇄ 图片格式转换</a>
+      <a href="/resize.html">⤢ 图片缩放</a>
+      <a href="/nine-grid.html">▦ 九宫格切图</a>
+      <a href="/watermark.html">🖋 图片加水印</a>
+      <a href="/filters.html">◐ 图片滤镜</a>
+    </div>
+  </div>
+</section>
 
 <footer class="site-footer">
-  <div class="container footer-inner">
-    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      <div class="footer-col">
+        <h3>图片工具</h3>
+        <a href="/removebg.html">AI 抠图去背景</a>
+        <a href="/compress.html">在线图片压缩</a>
+        <a href="/convert.html">图片格式转换</a>
+        <a href="/resize.html">图片缩放改尺寸</a>
+      </div>
+      <div class="footer-col">
+        <h3>更多工具</h3>
+        <a href="/nine-grid.html">九宫格切图</a>
+        <a href="/watermark.html">图片加水印</a>
+        <a href="/filters.html">图片滤镜美化</a>
+      </div>
+      <div class="footer-col">
+        <h3>热门搜索</h3>
+        <a href="/removebg.html">在线抠图</a>
+        <a href="/compress.html">图片压缩工具</a>
+        <a href="/convert.html">WebP 转 JPG</a>
+        <a href="/nine-grid.html">朋友圈九宫格</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
   </div>
 </footer>
 
@@ -182,6 +305,11 @@ document.getElementById('btnAgain').addEventListener('click', () => {
   document.getElementById('fileInput').value = '';
   currentBlob = null;
 });
+</script>
+<script>
+document.querySelectorAll('.faq-q').forEach(b => b.addEventListener('click', () => {
+  b.parentElement.classList.toggle('open');
+}));
 </script>
 </body>
 </html>
