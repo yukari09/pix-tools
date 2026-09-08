@@ -1,0 +1,46 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="compress">
+  <div slot="blurb">压缩 JPG / PNG / WebP 图片,实时预览压缩前后大小。可导出 WebP(体积最小)或 JPG。全部在你浏览器本地完成,图片不上传服务器。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP / GIF</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="quality">压缩质量 <span id="qualityVal">75</span>%</label>
+        <input type="range" id="quality" min="5" max="100" value="75">
+      </div>
+      <div class="control">
+        <label for="format">输出格式</label>
+        <select id="format">
+          <option value="image/webp">WebP(体积最小)</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG(原样大小)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出压缩图</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>压缩后</h3>
+        <img id="previewResult" alt="压缩后">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline src="/js/compress.js"></script>
+</ToolLayout>

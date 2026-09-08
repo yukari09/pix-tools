@@ -1,0 +1,77 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import FAQSection from '../components/FAQSection.astro';
+import RelatedTools from '../components/RelatedTools.astro';
+import { SITE, toolBySlug } from '../data/tools';
+
+interface Props {
+  slug: string;
+}
+
+// 所有工具页共用:面包屑/简版 schema 由 URL 拼出, 具体 schema 页面自己带
+const { slug } = Astro.props;
+const tool = toolBySlug(slug);
+if (!tool) throw new Error(`Unknown tool slug: ${slug}`);
+
+const url = `${SITE.domain}/${slug}.html`;
+const baseSchema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: tool.name,
+    url,
+    applicationCategory: 'MultimediaApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'CNY' },
+    description: tool.pageDesc,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '首页', item: SITE.domain + '/' },
+      { '@type': 'ListItem', position: 2, name: tool.name, item: url },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={tool.pageTitle}
+  description={tool.pageDesc}
+  canonical={`/${slug}.html`}
+  jsonLd={[
+    ...baseSchema,
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: tool.faqs.map(([q, a]) => ({
+        '@type': 'Question',
+        name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a },
+      })),
+    },
+  ]}
+>
+  <main class="container tool-page">
+    <nav class="breadcrumb">
+      <a href="/">首页</a><span class="sep">›</span><span>{tool.name}</span>
+    </nav>
+    <h1>{tool.icon} {tool.name}</h1>
+    <p class="tool-blurb"><slot name="blurb" /></p>
+
+    <div class="msg-error"></div>
+    <div class="status" id="status">
+      <div class="spinner"></div>
+      <div class="progress-track"><div class="progress-bar" id="statusBar"></div></div>
+      <div class="status-text" id="statusText">处理中…</div>
+    </div>
+
+    <slot />
+  </main>
+
+  <section class="container">
+    <FAQSection faqs={tool.faqs} title={tool.name} />
+    <RelatedTools />
+  </section>
+</BaseLayout>

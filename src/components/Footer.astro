@@ -1,0 +1,44 @@
+---
+import { SITE } from '../data/tools';
+
+const cols: [string, [string, string][]][] = [
+  ['图片工具', [
+    ['AI 抠图去背景', '/removebg.html'],
+    ['在线图片压缩', '/compress.html'],
+    ['图片格式转换', '/convert.html'],
+    ['图片缩放改尺寸', '/resize.html'],
+  ]],
+  ['更多工具', [
+    ['九宫格切图', '/nine-grid.html'],
+    ['图片加水印', '/watermark.html'],
+    ['图片滤镜美化', '/filters.html'],
+  ]],
+  ['热门搜索', [
+    ['在线抠图', '/removebg.html'],
+    ['图片压缩工具', '/compress.html'],
+    ['WebP 转 JPG', '/convert.html'],
+    ['朋友圈九宫格', '/nine-grid.html'],
+  ]],
+];
+---
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+        <p style="margin-top:10px">免费在线图片处理工具合集,所有处理均在浏览器本地完成,图片不上传服务器。</p>
+      </div>
+      {cols.map(([title, links]) => (
+        <div class="footer-col">
+          <h3>{title}</h3>
+          {links.map(([label, href]) => <a href={href}>{label}</a>)}
+        </div>
+      ))}
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 {SITE.name} · 所有处理均在浏览器本地完成</p>
+      <p><a href="/">首页</a> · <a href="/sitemap.xml">Sitemap</a></p>
+    </div>
+  </div>
+</footer>

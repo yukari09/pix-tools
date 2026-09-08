@@ -1,0 +1,43 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="nine-grid">
+  <div slot="blurb">把一张大图一键切成 3×3 九宫格,朋友圈、小红书、Instagram 发图拼出完整大图效果。支持 2×2、3×3、4×4 网格,全部在浏览器本地完成,图片不上传服务器。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP · 推荐正方形大图</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="grid">网格</label>
+        <select id="grid">
+          <option value="3">3×3 九宫格(推荐)</option>
+          <option value="2">2×2 四宫格</option>
+          <option value="4">4×4 十六格</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="outFmt">输出格式</label>
+        <select id="outFmt">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnZip">⬇ 下载全部(ZIP)</button>
+    </div>
+    <div class="compare-box" style="margin-bottom:16px">
+      <h3>切图结果预览</h3>
+      <div id="gridPreview" style="display:grid;gap:4px;background:#f1f5f9;padding:8px;border-radius:8px"></div>
+      <div class="compare-meta" id="metaResult"></div>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline src="/js/nine-grid.js"></script>
+</ToolLayout>

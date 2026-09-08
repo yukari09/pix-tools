@@ -1,0 +1,46 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="convert">
+  <div slot="blurb">PNG、JPG、WebP 三种格式一键互转:WebP 转 JPG(兼容老软件)、JPG 转 PNG(透明底需求)、任意转 WebP(体积最小)。本地转换,图片不上传服务器。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">PNG / JPG / WebP</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="target">转换目标格式</label>
+        <select id="target">
+          <option value="image/webp">WebP</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="quality">JPG/WebP 质量 <span id="qualityVal">90</span>%</label>
+        <input type="range" id="quality" min="30" max="100" value="90">
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出转换图</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>转换后</h3>
+        <img id="previewResult" alt="转换后">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline src="/js/convert.js"></script>
+</ToolLayout>

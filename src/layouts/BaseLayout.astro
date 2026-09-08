@@ -1,0 +1,43 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/tools';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  jsonLd?: object[];       // 页面的附加结构化数据 (自动并入 WebApplication/Breadcrumb 等)
+  noindex?: boolean;
+}
+
+const { title, description, canonical, jsonLd = [], noindex = false } = Astro.props;
+const url = SITE.domain + canonical;
+---
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  {noindex ? <meta name="robots" content="noindex"> : <meta name="robots" content="index,follow">}
+  <link rel="canonical" href={url}>
+  <meta property="og:type" content="website">
+  <meta property="og:title" content={title.replace(' | PixTools', '')}>
+  <meta property="og:description" content={description}>
+  <meta property="og:url" content={url}>
+  <meta property="og:site_name" content={SITE.name}>
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary">
+  <link rel="stylesheet" href="/css/style.css">
+  {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)}></script>)}
+  <script data-name="plausible" data-domain="pixtools.morio.cc" src="https://analytics.morio.cc/js/script.js" defer></script>
+</head>
+<body>
+  <Header />
+  <slot />
+  <Footer />
+</body>
+</html>

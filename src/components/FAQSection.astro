@@ -1,0 +1,26 @@
+---
+interface Props {
+  faqs: [string, string][];
+  title: string;
+}
+const { faqs, title } = Astro.props;
+---
+
+<div class="faq-section">
+  <h2>{title}常见问题</h2>
+  <p class="faq-sub">关于{title}的常见疑问,这里一次说清。</p>
+  {faqs.map(([q, a], i) => (
+    <div class:list={['faq-item', i === 0 && 'open']}>
+      <button class="faq-q">{q}<span class="arrow">▼</span></button>
+      <div class="faq-a">{a}</div>
+    </div>
+  ))}
+</div>
+
+<script>
+  document.querySelectorAll('.faq-q').forEach((b) =>
+    b.addEventListener('click', () => {
+      b.parentElement!.classList.toggle('open');
+    }),
+  );
+</script>

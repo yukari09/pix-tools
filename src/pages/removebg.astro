@@ -1,0 +1,35 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="removebg">
+  <div slot="blurb">上传图片,AI 自动识别主体并去除背景,生成透明背景 PNG。模型在你的浏览器里本地运行 —— 图片<strong>不会上传到服务器</strong>。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP · 首次使用需加载约 90MB AI 模型(之后有缓存)</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>抠图结果(透明背景)</h3>
+        <img id="previewResult" alt="抠图结果">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+    <div class="controls" style="margin-top:20px">
+      <button class="btn btn-primary" id="btnDownload">⬇ 下载 PNG</button>
+      <button class="btn btn-secondary" id="btnAgain">换一张图片</button>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline type="module" src="/js/removebg.js"></script>
+</ToolLayout>

@@ -1,0 +1,15 @@
+---
+import { TOOLS } from '../data/tools';
+const navTools = TOOLS.filter((t) => ['removebg', 'compress', 'convert', 'resize', 'nine-grid', 'watermark'].includes(t.slug));
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+    <nav class="nav">
+      {navTools.map((t) => (
+        <a href={`/${t.slug}.html`}>{t.name.split(' ')[0].replace('在线', '').replace('AI ', '') || t.name}</a>
+      ))}
+    </nav>
+  </div>
+</header>

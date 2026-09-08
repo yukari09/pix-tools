@@ -1,0 +1,72 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="resize">
+  <div slot="blurb">按百分比或指定宽高缩放图片,支持放大插值(双三次)保证质量。本地处理,图片不上传服务器。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label>缩放方式</label>
+        <select id="mode">
+          <option value="percent">按百分比</option>
+          <option value="pixels">按像素尺寸</option>
+        </select>
+      </div>
+      <div class="control" id="percentCtrl">
+        <label for="percent">缩放比例 <span id="percentVal">50</span>%</label>
+        <input type="range" id="percent" min="5" max="200" value="50">
+      </div>
+      <div class="control hidden" id="pixelCtrl">
+        <label for="pixelW">宽度(px)</label>
+        <input type="number" id="pixelW" min="1" max="8192" placeholder="自动">
+      </div>
+      <div class="control hidden" id="pixelCtrlH">
+        <label for="pixelH">高度(px)</label>
+        <input type="number" id="pixelH" min="1" max="8192" placeholder="自动">
+      </div>
+      <div class="control">
+        <label>保持宽高比</label>
+        <select id="keepRatio"><option value="true">是</option><option value="false">否</option></select>
+      </div>
+      <div class="control">
+        <label>放大插值</label>
+        <select id="interp">
+          <option value="high">高质量(双三次)</option>
+          <option value="low">快速(双线性)</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="outFmt">输出格式</label>
+        <select id="outFmt">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出缩放图</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>缩放后</h3>
+        <img id="previewResult" alt="缩放后">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline src="/js/resize.js"></script>
+</ToolLayout>

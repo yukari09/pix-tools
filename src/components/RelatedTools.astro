@@ -1,0 +1,10 @@
+---
+import { RELATED_LINKS } from '../data/tools';
+---
+
+<div class="related">
+  <h2>你可能还需要</h2>
+  <div class="related-links">
+    {RELATED_LINKS.map(([label, href]) => <a href={href}>{label}</a>)}
+  </div>
+</div>

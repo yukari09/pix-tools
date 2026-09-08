@@ -1,0 +1,61 @@
+---
+import ToolLayout from '../layouts/ToolLayout.astro';
+---
+
+<ToolLayout slug="filters">
+  <div slot="blurb">调节亮度、对比度、饱和度,一键黑白、复古、模糊、反色效果。实时预览,本地处理不上传服务器。</div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="brightness">亮度 <span id="brightnessVal">0</span></label>
+        <input type="range" id="brightness" min="-100" max="100" value="0">
+      </div>
+      <div class="control">
+        <label for="contrast">对比度 <span id="contrastVal">0</span></label>
+        <input type="range" id="contrast" min="-100" max="100" value="0">
+      </div>
+      <div class="control">
+        <label for="saturate">饱和度 <span id="saturateVal">0</span></label>
+        <input type="range" id="saturate" min="-100" max="100" value="0">
+      </div>
+      <div class="control">
+        <label for="blur">模糊 <span id="blurVal">0</span>px</label>
+        <input type="range" id="blur" min="0" max="20" value="0">
+      </div>
+      <div class="control">
+        <label for="preset">一键预设</label>
+        <select id="preset">
+          <option value="">自定义</option>
+          <option value="grayscale">黑白</option>
+          <option value="sepia">复古</option>
+          <option value="invert">反色</option>
+          <option value="vivid">鲜艳</option>
+          <option value="fade">褪色</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出图片</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>效果预览</h3>
+        <img id="previewResult" alt="滤镜预览">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+  <script is:inline src="/js/common.js"></script>
+  <script is:inline src="/js/filters.js"></script>
+</ToolLayout>
