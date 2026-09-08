@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 一键抠图 — 在线去背景生成透明 PNG | PixTools</title>
+<meta name="description" content="免费在线 AI 抠图工具:一键去除图片背景,生成透明背景 PNG。AI 模型在浏览器本地运行,图片不上传服务器。支持人物、商品、产品图抠图。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://pixtools.morio.cc/removebg.html">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "AI 一键抠图",
+  "url": "https://pixtools.morio.cc/removebg.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+  "description": "AI 去除图片背景,生成透明背景 PNG,模型在浏览器本地运行不上传服务器。"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+    <nav class="nav">
+      <a href="/removebg.html">抠图</a>
+      <a href="/compress.html">压缩</a>
+      <a href="/convert.html">转换</a>
+      <a href="/resize.html">缩放</a>
+      <a href="/filters.html">滤镜</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container tool-page">
+  <h1>✂ AI 一键抠图</h1>
+  <p class="tool-blurb">上传图片,AI 自动识别主体并去除背景,生成透明背景 PNG。模型在你的浏览器里本地运行 —— 图片<strong>不会上传到服务器</strong>。</p>
+
+  <div class="msg-error"></div>
+  <div class="status" id="status">
+    <div class="spinner"></div>
+    <div class="progress-track"><div class="progress-bar" id="statusBar"></div></div>
+    <div class="status-text" id="statusText">加载 AI 模型…</div>
+  </div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP · 首次使用需加载约 23MB AI 模型(之后有缓存)</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>抠图结果(透明背景)</h3>
+        <img id="previewResult" alt="抠图结果">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+    <div class="controls" style="margin-top:20px">
+      <button class="btn btn-primary" id="btnDownload">⬇ 下载 PNG</button>
+      <button class="btn btn-secondary" id="btnAgain">换一张图片</button>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script type="module">
+let model = null;
+let processor = null;
+let currentBlob = null;
+
+async function getRemover() {
+  if (model) return { model, processor };
+  const st = document.getElementById('status');
+  const bar = document.getElementById('statusBar');
+  const txt = document.getElementById('statusText');
+  st.classList.add('show');
+  txt.textContent = '下载 AI 抠图模型(首次约 90MB,之后有浏览器缓存)…';
+  bar.style.width = '15%';
+  try {
+    const mod = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3');
+    mod.env.allowLocalModels = false;
+    if (mod.env.backends?.onnx?.wasm) mod.env.backends.onnx.wasm.proxy = true;
+    bar.style.width = '30%';
+    txt.textContent = '初始化 AI 模型…';
+    const t0 = Date.now();
+    model = await mod.AutoModel.from_pretrained('briaai/RMBG-1.4', {
+      progress_callback: (p) => { bar.style.width = 30 + Math.round(p * 50) + '%'; }
+    });
+    processor = await mod.AutoProcessor.from_pretrained('briaai/RMBG-1.4');
+    console.log('model ready in', ((Date.now() - t0) / 1000).toFixed(1) + 's');
+    bar.style.width = '100%';
+    txt.textContent = '模型就绪 ✓';
+    setTimeout(() => st.classList.remove('show'), 800);
+  } catch (err) {
+    console.error(err);
+    st.classList.remove('show');
+    showError('模型加载失败,请检查网络后重试(需能访问 HuggingFace/镜像)。');
+    throw err;
+  }
+  return { model, processor };
+}
+
+async function handleFile(file) {
+  clearError();
+  if (!file.type.startsWith('image/')) { showError('请选择图片文件(jpg/png/webp)'); return; }
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('workArea').classList.remove('hidden');
+  const img = await loadImage(file);
+  document.getElementById('previewOrig').src = img.src;
+  document.getElementById('metaOrig').textContent = `${file.name} · ${fmtBytes(file.size)} · ${img.naturalWidth}×${img.naturalHeight}`;
+  document.getElementById('metaResult').textContent = '处理中…';
+
+  const st = document.getElementById('status');
+  const bar = document.getElementById('statusBar');
+  const txt = document.getElementById('statusText');
+  st.classList.add('show');
+
+  try {
+    const { model: m, processor: p } = await getRemover();
+    txt.textContent = 'AI 抠图中(本地推理,约 5-30 秒)…';
+    bar.style.width = '60%';
+
+    // 用 RawImage 直接读,避免 canvas 转换
+    const raw = await (await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3')).RawImage.fromURL(URL.createObjectURL(file));
+    const { pixel_values } = await p(raw);
+    const { output } = await m({ input: pixel_values });
+    bar.style.width = '85%';
+
+    // 掩码缩回原图尺寸
+    const maskData = (await (await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3')).RawImage.fromTensor(output[0].mul(255).to('uint8')).resize(raw.width, raw.height)).data;
+
+    // 原图画到 canvas,替换 alpha
+    const outCanvas = document.createElement('canvas');
+    outCanvas.width = raw.width;
+    outCanvas.height = raw.height;
+    const ctx = outCanvas.getContext('2d');
+    ctx.drawImage(raw.toCanvas(), 0, 0);
+    const imgData = ctx.getImageData(0, 0, raw.width, raw.height);
+    for (let i = 0; i < maskData.length; ++i) {
+      imgData.data[4 * i + 3] = maskData[i];
+    }
+    ctx.putImageData(imgData, 0, 0);
+
+    currentBlob = await new Promise((res) => outCanvas.toBlob(res, 'image/png'));
+    const url = URL.createObjectURL(currentBlob);
+    document.getElementById('previewResult').src = url;
+    document.getElementById('metaResult').textContent = `${fmtBytes(currentBlob.size)} · ${raw.width}×${raw.height} · 透明背景`;
+    bar.style.width = '100%';
+    txt.textContent = '完成 ✓';
+    setTimeout(() => st.classList.remove('show'), 600);
+  } catch (err) {
+    console.error(err);
+    st.classList.remove('show');
+    showError('抠图失败:' + (err.message || err));
+  }
+}
+
+setupDropzone('dropzone', 'fileInput', handleFile);
+document.getElementById('btnDownload').addEventListener('click', () => {
+  if (currentBlob) download(currentBlob, swapExt('removebg.png', 'png'));
+});
+document.getElementById('btnAgain').addEventListener('click', () => {
+  document.getElementById('dropzone').classList.remove('hidden');
+  document.getElementById('workArea').classList.add('hidden');
+  document.getElementById('fileInput').value = '';
+  currentBlob = null;
+});
+</script>
+</body>
+</html>

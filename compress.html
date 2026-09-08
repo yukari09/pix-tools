@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线图片压缩 — JPG/PNG/WebP 无损压缩 | PixTools</title>
+<meta name="description" content="免费在线图片压缩工具:压缩 JPG、PNG、WebP 图片,自定义质量,实时预览压缩前后大小对比。浏览器本地处理,图片不上传服务器。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://pixtools.morio.cc/compress.html">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "在线图片压缩",
+  "url": "https://pixtools.morio.cc/compress.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+  "description": "在线压缩 JPG/PNG/WebP 图片,本地处理不上传服务器。"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+    <nav class="nav">
+      <a href="/removebg.html">抠图</a>
+      <a href="/compress.html">压缩</a>
+      <a href="/convert.html">转换</a>
+      <a href="/resize.html">缩放</a>
+      <a href="/filters.html">滤镜</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container tool-page">
+  <h1>🗜 在线图片压缩</h1>
+  <p class="tool-blurb">压缩 JPG / PNG / WebP 图片,实时预览压缩前后大小。可导出 WebP(体积最小)或 JPG。全部在你浏览器本地完成,图片不上传服务器。</p>
+
+  <div class="msg-error"></div>
+  <div class="status" id="status">
+    <div class="spinner"></div>
+    <div class="progress-track"><div class="progress-bar" id="statusBar"></div></div>
+    <div class="status-text" id="statusText">处理中…</div>
+  </div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP / GIF</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label for="quality">压缩质量 <span id="qualityVal">75</span>%</label>
+        <input type="range" id="quality" min="5" max="100" value="75">
+      </div>
+      <div class="control">
+        <label for="format">输出格式</label>
+        <select id="format">
+          <option value="image/webp">WebP(体积最小)</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/png">PNG(原样大小)</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出压缩图</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>压缩后</h3>
+        <img id="previewResult" alt="压缩后">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script>
+let currentBlob = null;
+let currentExt = 'webp';
+let origSize = 0;
+
+async function handleFile(file) {
+  clearError();
+  origSize = file.size;
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('workArea').classList.remove('hidden');
+  const img = await loadImage(file);
+  document.getElementById('previewOrig').src = img.src;
+  document.getElementById('metaOrig').textContent = `${file.name} · <span class="orig-size">${fmtBytes(file.size)}</span> · ${img.naturalWidth}×${img.naturalHeight}`;
+  compress(img);
+}
+
+async function compress(img) {
+  const q = parseInt(document.getElementById('quality').value);
+  const fmt = document.getElementById('format').value;
+  currentExt = fmt === 'image/jpeg' ? 'jpg' : fmt === 'image/png' ? 'png' : 'webp';
+
+  const status = document.getElementById('status');
+  status.classList.add('show');
+  document.getElementById('statusText').textContent = `编码 ${currentExt.toUpperCase()}…`;
+  document.getElementById('statusBar').style.width = '50%';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = img.naturalWidth;
+  canvas.height = img.naturalHeight;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(img, 0, 0);
+
+  // PNG 输出时去掉透明底变白底,避免某些场景阴影
+  if (fmt === 'image/jpeg') {
+    const bg = document.createElement('canvas');
+    bg.width = canvas.width; bg.height = canvas.height;
+    const bctx = bg.getContext('2d');
+    bctx.fillStyle = '#ffffff';
+    bctx.fillRect(0, 0, bg.width, bg.height);
+    bctx.drawImage(canvas, 0, 0);
+    currentBlob = await new Promise((res) => bg.toBlob(res, fmt, q / 100));
+  } else {
+    currentBlob = await new Promise((res) => canvas.toBlob(res, fmt, q / 100));
+  }
+
+  document.getElementById('statusBar').style.width = '100%';
+  setTimeout(() => status.classList.remove('show'), 400);
+
+  const url = URL.createObjectURL(currentBlob);
+  document.getElementById('previewResult').src = url;
+  const ratio = origSize > 0 ? (100 - (currentBlob.size / origSize * 100)).toFixed(0) : 0;
+  const cls = ratio >= 0 ? 'new-size' : '';
+  document.getElementById('metaResult').innerHTML =
+    `<span class="${cls}">${fmtBytes(currentBlob.size)}</span> · ${ratio >= 0 ? '节省 ' + ratio + '%' : '变大 ' + Math.abs(ratio) + '%'}`;
+}
+
+const qInput = document.getElementById('quality');
+qInput.addEventListener('input', () => {
+  document.getElementById('qualityVal').textContent = qInput.value;
+  clearError();
+  const img = document.getElementById('previewOrig');
+  if (img && img.src) {
+    // 重新从原图压缩(用缓存的 image 元素)
+    const cached = new Image();
+    cached.onload = () => compress(cached);
+    cached.src = img.src;
+  }
+});
+document.getElementById('format').addEventListener('change', () => {
+  clearError();
+  const img = document.getElementById('previewOrig');
+  if (img && img.src) {
+    const cached = new Image();
+    cached.onload = () => compress(cached);
+    cached.src = img.src;
+  }
+});
+document.getElementById('btnExport').addEventListener('click', () => {
+  if (currentBlob) download(currentBlob, swapExt('compressed', currentExt));
+});
+
+setupDropzone('dropzone', 'fileInput', handleFile);
+</script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>在线图片缩放 — 按比例或指定尺寸调整图片大小 | PixTools</title>
+<meta name="description" content="免费在线图片缩放工具:按百分比或指定宽高缩放图片,支持双线性/双三次插值,无需上传服务器。适合做店铺主图、社交媒体封面等。">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://pixtools.morio.cc/resize.html">
+<link rel="stylesheet" href="/css/style.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "在线图片缩放",
+  "url": "https://pixtools.morio.cc/resize.html",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Any",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CNY"},
+  "description": "在线按比例或指定尺寸缩放图片,本地处理不上传服务器。"
+}
+</script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
+    <nav class="nav">
+      <a href="/removebg.html">抠图</a>
+      <a href="/compress.html">压缩</a>
+      <a href="/convert.html">转换</a>
+      <a href="/resize.html">缩放</a>
+      <a href="/filters.html">滤镜</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container tool-page">
+  <h1>⤢ 在线图片缩放</h1>
+  <p class="tool-blurb">按百分比或指定宽高缩放图片,支持放大插值(双三次)保证质量。本地处理,图片不上传服务器。</p>
+
+  <div class="msg-error"></div>
+  <div class="status" id="status">
+    <div class="spinner"></div>
+    <div class="progress-track"><div class="progress-bar" id="statusBar"></div></div>
+    <div class="status-text" id="statusText">缩放中…</div>
+  </div>
+
+  <div class="dropzone hidden-after-upload" id="dropzone">
+    <div class="dropzone-icon">🖼</div>
+    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
+    <div class="dropzone-sub">JPG / PNG / WebP</div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <div class="work-area hidden" id="workArea">
+    <div class="controls">
+      <div class="control">
+        <label>缩放方式</label>
+        <select id="mode">
+          <option value="percent">按百分比</option>
+          <option value="pixels">按像素尺寸</option>
+        </select>
+      </div>
+      <div class="control" id="percentCtrl">
+        <label for="percent">缩放比例 <span id="percentVal">50</span>%</label>
+        <input type="range" id="percent" min="5" max="200" value="50">
+      </div>
+      <div class="control hidden" id="pixelCtrl">
+        <label for="pixelW">宽度(px)</label>
+        <input type="number" id="pixelW" min="1" max="8192" placeholder="自动">
+      </div>
+      <div class="control hidden" id="pixelCtrlH">
+        <label for="pixelH">高度(px)</label>
+        <input type="number" id="pixelH" min="1" max="8192" placeholder="自动">
+      </div>
+      <div class="control">
+        <label>保持宽高比</label>
+        <select id="keepRatio"><option value="true">是</option><option value="false">否</option></select>
+      </div>
+      <div class="control">
+        <label>放大插值</label>
+        <select id="interp">
+          <option value="high">高质量(双三次)</option>
+          <option value="low">快速(双线性)</option>
+        </select>
+      </div>
+      <div class="control">
+        <label for="outFmt">输出格式</label>
+        <select id="outFmt">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg">JPG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="btnExport">⬇ 导出缩放图</button>
+    </div>
+    <div class="compare">
+      <div class="compare-box">
+        <h3>原图</h3>
+        <img id="previewOrig" alt="原图">
+        <div class="compare-meta" id="metaOrig"></div>
+      </div>
+      <div class="compare-box">
+        <h3>缩放后</h3>
+        <img id="previewResult" alt="缩放后">
+        <div class="compare-meta" id="metaResult"></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <p>© 2026 PixTools 图片工具箱 · 所有处理均在浏览器本地完成</p>
+  </div>
+</footer>
+
+<script src="/js/common.js"></script>
+<script>
+let currentBlob = null;
+let currentExt = 'png';
+let cachedImg = null;
+let origSize = 0;
+
+async function handleFile(file) {
+  clearError();
+  origSize = file.size;
+  document.getElementById('dropzone').classList.add('hidden');
+  document.getElementById('workArea').classList.remove('hidden');
+  const img = await loadImage(file);
+  cachedImg = img;
+  document.getElementById('previewOrig').src = img.src;
+  document.getElementById('metaOrig').textContent = `${file.name} · ${img.naturalWidth}×${img.naturalHeight} · ${fmtBytes(file.size)}`;
+  resize();
+}
+
+function computeSize() {
+  const w = cachedImg.naturalWidth, h = cachedImg.naturalHeight;
+  const mode = document.getElementById('mode').value;
+  const keep = document.getElementById('keepRatio').value === 'true';
+  if (mode === 'percent') {
+    const p = parseInt(document.getElementById('percent').value) / 100;
+    return { width: Math.max(1, Math.round(w * p)), height: Math.max(1, Math.round(h * p)) };
+  }
+  const pw = parseInt(document.getElementById('pixelW').value);
+  const ph = parseInt(document.getElementById('pixelH').value);
+  let nw, nh;
+  if (!isNaN(pw) && pw > 0 && !isNaN(ph) && ph > 0) { nw = pw; nh = ph; }
+  else if (!isNaN(pw) && pw > 0) {
+    nw = pw; nh = keep ? Math.max(1, Math.round(h * (pw / w))) : h;
+  } else if (!isNaN(ph) && ph > 0) {
+    nh = ph; nw = keep ? Math.max(1, Math.round(w * (ph / h))) : w;
+  } else { nw = w; nh = h; }
+  return { width: nw, height: nh };
+}
+
+async function resize() {
+  if (!cachedImg) return;
+  const { width: nw, height: nh } = computeSize();
+  const status = document.getElementById('status');
+  status.classList.add('show');
+  document.getElementById('statusText').textContent = `缩放为 ${nw}×${nh}…`;
+  document.getElementById('statusBar').style.width = '50%';
+
+  const canvas = document.createElement('canvas');
+  canvas.width = nw; canvas.height = nh;
+  const ctx = canvas.getContext('2d');
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = document.getElementById('interp').value;
+
+  const outFmt = document.getElementById('outFmt').value;
+  currentExt = outFmt === 'image/jpeg' ? 'jpg' : outFmt === 'image/webp' ? 'webp' : 'png';
+  if (outFmt === 'image/jpeg') {
+    ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, nw, nh);
+  }
+  ctx.drawImage(cachedImg, 0, 0, nw, nh);
+  currentBlob = await new Promise((res) => canvas.toBlob(res, outFmt, 0.92));
+  document.getElementById('statusBar').style.width = '100%';
+  setTimeout(() => status.classList.remove('show'), 400);
+
+  document.getElementById('previewResult').src = URL.createObjectURL(currentBlob);
+  document.getElementById('metaResult').textContent =
+    `${nw}×${nh} · ${fmtBytes(currentBlob.size)}${origSize ? ' · 原 ' + fmtBytes(origSize) : ''}`;
+}
+
+document.getElementById('mode').addEventListener('change', () => {
+  const mode = document.getElementById('mode').value;
+  document.getElementById('percentCtrl').classList.toggle('hidden', mode !== 'percent');
+  document.getElementById('pixelCtrl').classList.toggle('hidden', mode !== 'pixels');
+  document.getElementById('pixelCtrlH').classList.toggle('hidden', mode !== 'pixels');
+  clearError(); resize();
+});
+document.getElementById('percent').addEventListener('input', () => {
+  document.getElementById('percentVal').textContent = document.getElementById('percent').value;
+  clearError(); resize();
+});
+['pixelW', 'pixelH', 'keepRatio', 'interp', 'outFmt'].forEach(id =>
+  document.getElementById(id).addEventListener('change', () => { clearError(); resize(); })
+);
+document.getElementById('btnExport').addEventListener('click', () => {
+  if (currentBlob) download(currentBlob, swapExt('resized', currentExt));
+});
+
+setupDropzone('dropzone', 'fileInput', handleFile);
+</script>
+</body>
+</html>
