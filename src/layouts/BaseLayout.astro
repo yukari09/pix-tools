@@ -33,7 +33,13 @@ const url = SITE.domain + canonical;
   <meta name="twitter:card" content="summary">
   <link rel="stylesheet" href="/css/style.css">
   {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)}></script>)}
-  <script data-name="plausible" data-domain="pixtools.morio.cc" src="https://analytics.morio.cc/js/script.js" defer></script>
+  <!-- Privacy-friendly analytics by Plausible -->
+  <script is:inline async src="https://analytics.morio.cc/js/pa-8VOFeXvSUvjP0xR8BpGqw.js"></script>
+  <script is:inline>
+    window.plausible = window.plausible || function () { (plausible.q = plausible.q || []).push(arguments) };
+    plausible.init = plausible.init || function (i) { plausible.o = i || {} };
+    plausible.init();
+  </script>
 </head>
 <body>
   <Header />
