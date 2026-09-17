@@ -8,7 +8,7 @@ const navTools = TOOLS.filter((t) => ['removebg', 'compress', 'convert', 'resize
     <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
     <nav class="nav">
       {navTools.map((t) => (
-        <a href={`/${t.slug}.html`}>{t.name.split(' ')[0].replace('在线', '').replace('AI ', '') || t.name}</a>
+        <a href={`/${t.slug}`}>{t.name.split(' ')[0].replace('在线', '').replace('AI ', '') || t.name}</a>
       ))}
     </nav>
   </div>

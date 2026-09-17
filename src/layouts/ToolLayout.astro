@@ -13,7 +13,7 @@ const { slug } = Astro.props;
 const tool = toolBySlug(slug);
 if (!tool) throw new Error(`Unknown tool slug: ${slug}`);
 
-const url = `${SITE.domain}/${slug}.html`;
+const url = `${SITE.domain}/${slug}`;
 const baseSchema = [
   {
     '@context': 'https://schema.org',
@@ -39,7 +39,7 @@ const baseSchema = [
 <BaseLayout
   title={tool.pageTitle}
   description={tool.pageDesc}
-  canonical={`/${slug}.html`}
+  canonical={`/${slug}`}
   jsonLd={[
     ...baseSchema,
     {
