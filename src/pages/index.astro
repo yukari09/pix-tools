@@ -41,7 +41,7 @@ const jsonLd = [
 
     <section class="tool-grid">
       {TOOLS.map((t) => (
-        <a href={`/${t.slug}.html`} class="tool-card">
+        <a href={`/${t.slug}`} class="tool-card">
           {t.hotTag && <span class="tool-tag">{t.hotTag}</span>}
           <div class="tool-icon" style={`background:${t.iconBg};color:${t.iconColor}`}>{t.icon}</div>
           <h2 class="tool-name">{t.cardTitle}</h2>
