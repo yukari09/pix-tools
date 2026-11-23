@@ -3,70 +3,117 @@ import ToolLayout from '../layouts/ToolLayout.astro';
 ---
 
 <ToolLayout slug="resize">
-  <div slot="blurb">按百分比或指定宽高缩放图片,支持放大插值(双三次)保证质量。本地处理,图片不上传服务器。</div>
+  <section slot="hero" class="tool-hero">
+    <div class="tool-hero__copy">
+      <h1>在线图片缩放，<br>改尺寸不拉伸。</h1>
+      <p class="tool-benefit">按百分比或指定宽高缩放图片，保持宽高比，双三次插值保证放大质量。本地处理，图片不上传。</p>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dropzone__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v4h14v-4"/></svg>
+        </span>
+        <span class="dropzone__main">
+          <b>点击选择图片，或拖到这里</b>
+          <span>JPG / PNG / WebP · 图片不离开本机</span>
+        </span>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+      <p class="tool-note">比例 / 像素 · 保持宽高比 · 0 上传</p>
+    </div>
 
-  <div class="dropzone hidden-after-upload" id="dropzone">
-    <div class="dropzone-icon">🖼</div>
-    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
-    <div class="dropzone-sub">JPG / PNG / WebP</div>
-    <input type="file" id="fileInput" accept="image/*">
+    <div class="demo-stage stage-resize">
+      <span class="stage-note">示例 · 保持 3:2</span>
+      <div class="dim-row"><span class="small">原图</span><span class="big">1200 × 800</span><span class="small">→</span><span class="big">800 × 533</span></div>
+      <div class="dim-frame"><img src="/assets/demo/resize-after.jpg" alt="缩放示例：800×533 的瓶子" loading="lazy"></div>
+      <div class="dim-caption"><span>宽高比不变</span><span>双三次插值</span></div>
+    </div>
+  </section>
+
+  <section class="work-section hidden" id="workArea">
+    <div class="work-head"><h2>缩放设置</h2><div class="work-head-actions"><span>本地处理 · 0 上传</span><button class="btn btn-secondary btn-sm" type="button" data-reset>换一张</button></div></div>
+<div class="work-grid">
+        <div class="controls">
+          <div class="control">
+            <label for="mode">缩放方式</label>
+            <select id="mode">
+              <option value="percent">按百分比</option>
+              <option value="pixels">按像素尺寸</option>
+            </select>
+          </div>
+          <div class="control" id="percentCtrl">
+            <label for="percent">缩放比例 <span id="percentVal">50</span>%</label>
+            <input type="range" id="percent" min="5" max="200" value="50">
+          </div>
+          <div class="control hidden" id="pixelCtrl">
+            <label for="pixelW">宽度（px）</label>
+            <input type="number" id="pixelW" min="1" max="8192" placeholder="自动">
+          </div>
+          <div class="control hidden" id="pixelCtrlH">
+            <label for="pixelH">高度（px）</label>
+            <input type="number" id="pixelH" min="1" max="8192" placeholder="自动">
+          </div>
+          <div class="control">
+            <label for="keepRatio">保持宽高比</label>
+            <select id="keepRatio"><option value="true">是</option><option value="false">否</option></select>
+          </div>
+          <div class="control">
+            <label for="interp">放大插值</label>
+            <select id="interp">
+              <option value="high">高质量（双三次）</option>
+              <option value="low">快速（双线性）</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="outFmt">输出格式</label>
+            <select id="outFmt">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+          <div class="controls-actions">
+            <button class="btn btn-primary" id="btnExport">导出缩放图</button>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-box">
+            <h3>原图</h3>
+            <img id="previewOrig" src="/assets/demo/resize-before.jpg" alt="原图">
+            <div class="compare-meta" id="metaOrig"></div>
+          </div>
+          <div class="compare-box">
+            <h3>缩放后</h3>
+            <img id="previewResult" src="/assets/demo/resize-after.jpg" alt="缩放后">
+            <div class="compare-meta" id="metaResult"></div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <div class="steps">
+    <div class="step"><span class="n">01</span><div><b>放入图片</b><p>先读取原图尺寸，文件不上传。</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>定尺寸</b><p>按百分比，或直接填目标宽高；锁定宽高比。</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>导出</b><p>选 PNG、JPG 或 WebP，按目标尺寸输出。</p></div></div>
   </div>
 
-  <div class="work-area hidden" id="workArea">
-    <div class="controls">
-      <div class="control">
-        <label>缩放方式</label>
-        <select id="mode">
-          <option value="percent">按百分比</option>
-          <option value="pixels">按像素尺寸</option>
-        </select>
-      </div>
-      <div class="control" id="percentCtrl">
-        <label for="percent">缩放比例 <span id="percentVal">50</span>%</label>
-        <input type="range" id="percent" min="5" max="200" value="50">
-      </div>
-      <div class="control hidden" id="pixelCtrl">
-        <label for="pixelW">宽度(px)</label>
-        <input type="number" id="pixelW" min="1" max="8192" placeholder="自动">
-      </div>
-      <div class="control hidden" id="pixelCtrlH">
-        <label for="pixelH">高度(px)</label>
-        <input type="number" id="pixelH" min="1" max="8192" placeholder="自动">
-      </div>
-      <div class="control">
-        <label>保持宽高比</label>
-        <select id="keepRatio"><option value="true">是</option><option value="false">否</option></select>
-      </div>
-      <div class="control">
-        <label>放大插值</label>
-        <select id="interp">
-          <option value="high">高质量(双三次)</option>
-          <option value="low">快速(双线性)</option>
-        </select>
-      </div>
-      <div class="control">
-        <label for="outFmt">输出格式</label>
-        <select id="outFmt">
-          <option value="image/png">PNG</option>
-          <option value="image/jpeg">JPG</option>
-          <option value="image/webp">WebP</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="btnExport">⬇ 导出缩放图</button>
-    </div>
-    <div class="compare">
-      <div class="compare-box">
-        <h3>原图</h3>
-        <img id="previewOrig" alt="原图">
-        <div class="compare-meta" id="metaOrig"></div>
-      </div>
-      <div class="compare-box">
-        <h3>缩放后</h3>
-        <img id="previewResult" alt="缩放后">
-        <div class="compare-meta" id="metaResult"></div>
-      </div>
-    </div>
-  </div>
+  <section class="rate">
+    <h2>按比例缩放怎么算</h2>
+    <p>目标尺寸 = 原图尺寸 × 比例，宽和高乘同一个数，长宽比不变。以 1200 × 800 为例：</p>
+    <table class="rate-table">
+      <caption>按比例缩小计算尺寸</caption>
+      <thead>
+        <tr><th>比例</th><th>目标尺寸</th><th>长边变化</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>90%</td><td>1080 × 720</td><td>长边 1200 → 1080</td></tr>
+        <tr><td>75%</td><td>900 × 600</td><td>长边 1200 → 900</td></tr>
+        <tr><td>50%</td><td>600 × 400</td><td>长边 1200 → 600</td></tr>
+        <tr><td>33%</td><td>396 × 264</td><td>长边 1200 → 396</td></tr>
+        <tr><td>25%</td><td>300 × 200</td><td>长边 1200 → 300</td></tr>
+      </tbody>
+    </table>
+    <p>连续缩两次就把比例相乘：先 50% 再 50%，等于一次 25%，1200 × 800 一路变成 300 × 200。中间别四舍五入，最后一步再取整。</p>
+  </section>
+
   <script is:inline src="/js/common.js"></script>
   <script is:inline src="/js/resize.js"></script>
 </ToolLayout>

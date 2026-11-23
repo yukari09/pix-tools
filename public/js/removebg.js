@@ -29,7 +29,7 @@ async function getRemover() {
   } catch (err) {
     console.error(err);
     st.classList.remove('show');
-    showError('模型加载失败,请检查网络后重试(需能访问 HuggingFace/镜像)。');
+    showError('模型加载失败，请检查网络后重试(需能访问 HuggingFace/镜像)。');
     throw err;
   }
   return { model, processor };
@@ -52,7 +52,7 @@ async function handleFile(file) {
 
   try {
     const { model: m, processor: p } = await getRemover();
-    txt.textContent = 'AI 抠图中(本地推理,约 5-30 秒)…';
+    txt.textContent = 'AI 抠图中(本地推理，约 5-30 秒)…';
     bar.style.width = '60%';
 
     const tmod = await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.3.3');
@@ -86,7 +86,7 @@ async function handleFile(file) {
   } catch (err) {
     console.error(err);
     st.classList.remove('show');
-    showError('抠图失败:' + (err.message || err));
+    showError('抠图失败：' + (err.message || err));
   }
 }
 

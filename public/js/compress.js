@@ -2,15 +2,17 @@
 let currentBlob = null;
 let currentExt = 'webp';
 let origSize = 0;
+let origName = 'image';
 
 async function handleFile(file) {
   clearError();
+  origName = file.name;
   origSize = file.size;
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('workArea').classList.remove('hidden');
   const img = await loadImage(file);
   document.getElementById('previewOrig').src = img.src;
-  document.getElementById('metaOrig').textContent = `${file.name} · <span class="orig-size">${fmtBytes(file.size)}</span> · ${img.naturalWidth}×${img.naturalHeight}`;
+  document.getElementById('metaOrig').textContent = `${file.name} · ${fmtBytes(file.size)} · ${img.naturalWidth}×${img.naturalHeight}`;
   compress(img);
 }
 
@@ -70,7 +72,7 @@ document.getElementById('format').addEventListener('change', () => {
   if (orig && orig.src) img.src = orig.src;
 });
 document.getElementById('btnExport').addEventListener('click', () => {
-  if (currentBlob) download(currentBlob, swapExt('compressed', currentExt));
+  if (currentBlob) download(currentBlob, swapExt(origName, currentExt));
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);

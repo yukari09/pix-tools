@@ -1,4 +1,4 @@
-/* PixTools common helpers — 全部浏览器本地处理,不传服务器 */
+/* PixTools common helpers — 全部浏览器本地处理，不传服务器 */
 
 /** 绑定拖拽/点击上传区。cb(file) */
 function setupDropzone(dzId, inputId, cb) {
@@ -7,8 +7,28 @@ function setupDropzone(dzId, inputId, cb) {
   if (!dz || !input) return;
 
   dz.addEventListener('click', () => input.click());
+  dz.setAttribute('role', 'button');
+  if (!dz.hasAttribute('tabindex')) dz.tabIndex = 0;
+  dz.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); input.click(); }
+  });
+  const safe = async (file) => {
+    clearError();
+    try {
+      await cb(file);
+    } catch (e) {
+      console.error(e);
+      showError((e && e.message) || '图片解码失败，请换一张图片试试');
+      const wa = document.getElementById('workArea');
+      const st = document.getElementById('status');
+      dz.classList.remove('hidden');
+      if (wa) wa.classList.add('hidden');
+      if (st) st.classList.remove('show');
+      input.value = '';
+    }
+  };
   input.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) cb(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) safe(e.target.files[0]);
   });
   ['dragover', 'dragenter'].forEach(ev => dz.addEventListener(ev, (e) => {
     e.preventDefault(); dz.classList.add('dragover');
@@ -17,7 +37,7 @@ function setupDropzone(dzId, inputId, cb) {
     e.preventDefault(); dz.classList.remove('dragover');
   }));
   dz.addEventListener('drop', (e) => {
-    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) cb(e.dataTransfer.files[0]);
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) safe(e.dataTransfer.files[0]);
   });
 }
 
@@ -27,7 +47,7 @@ function loadImage(file) {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = () => resolve(img);
-    img.onerror = (e) => { URL.revokeObjectURL(url); reject(new Error('图片解码失败,请换一张试试')); };
+    img.onerror = (e) => { URL.revokeObjectURL(url); reject(new Error('图片解码失败，请换一张试试')); };
     img.src = url;
   });
 }
@@ -80,8 +100,41 @@ function clearError() {
   if (box) box.style.display = 'none';
 }
 
-/** 文件名校后缀: test.png -> test.webp */
+/** 文件名校后缀：test.png -> test.webp */
 function swapExt(name, newExt) {
   const base = name.replace(/\.[^.]+$/, '');
   return base + '.' + newExt;
 }
+/** 是否减少动效 */
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+/** 换一张：清空文件、隐藏工作区、回到上传区 */
+function resetTool() {
+  const dz = document.getElementById('dropzone');
+  const wa = document.getElementById('workArea');
+  const input = document.getElementById('fileInput');
+  const st = document.getElementById('status');
+  clearError();
+  if (st) st.classList.remove('show');
+  if (wa) wa.classList.add('hidden');
+  if (dz) dz.classList.remove('hidden');
+  if (input) input.value = '';
+  if (dz) dz.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'center' });
+}
+document.querySelectorAll('[data-reset]').forEach((b) => b.addEventListener('click', resetTool));
+
+/** 上传后把工作区带到视野里 */
+(function revealWorkArea() {
+  const work = document.getElementById('workArea');
+  if (!work || typeof MutationObserver === 'undefined') return;
+  let wasHidden = work.classList.contains('hidden');
+  new MutationObserver(() => {
+    const hidden = work.classList.contains('hidden');
+    if (wasHidden && !hidden) {
+      setTimeout(() => work.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' }), 60);
+    }
+    wasHidden = hidden;
+  }).observe(work, { attributes: true, attributeFilter: ['class'] });
+})();

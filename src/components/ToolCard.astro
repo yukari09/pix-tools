@@ -1,0 +1,83 @@
+---
+import type { Tool } from '../data/tools';
+
+interface Props {
+  tool: Tool;
+  featured?: boolean;
+}
+const { tool, featured = false } = Astro.props;
+---
+<a
+  href={`/${tool.slug}`}
+  class:list={['tool-card', featured && 'tool-card--featured', tool.slug === 'filters' && 'tool-card--wide']}
+  data-category={tool.category}
+  style={`--accent:${tool.accent}`}
+>
+  <div class="tool-card__plate">
+    {tool.slug === 'removebg' && (
+      <div class="demo-split">
+        <div class="demo-half">
+          <img src="/assets/demo/removebg-before.jpg" alt="示例：原图" loading="lazy">
+        </div>
+        <div class="demo-half after checker">
+          <img src="/assets/demo/removebg-after.png" alt="示例：透明背景结果" loading="lazy">
+        </div>
+        <div class="demo-divider"></div>
+        <span class="demo-label">原图</span>
+        <span class="demo-label" style="left:auto;right:9px">透明 PNG</span>
+      </div>
+    )}
+    {tool.slug === 'compress' && (
+      <>
+        <img src="/assets/demo/compress-before.jpg" alt="压缩示例图片" loading="lazy">
+        <span class="size-chip">154 KB → 111 KB</span>
+      </>
+    )}
+    {tool.slug === 'convert' && (
+      <>
+        <img src="/assets/demo/convert-source-small.jpg" alt="格式转换示例图片" loading="lazy">
+        <span class="size-chip">JPG → WebP</span>
+      </>
+    )}
+    {tool.slug === 'resize' && (
+      <>
+        <img src="/assets/demo/resize-after.jpg" alt="缩放示例图片" loading="lazy">
+        <span class="size-chip">800 × 533</span>
+      </>
+    )}
+    {tool.slug === 'nine-grid' && (
+      <>
+        <img src="/assets/demo/nine-grid.jpg" alt="九宫格切图示例" loading="lazy">
+        <span class="size-chip">3 × 3</span>
+      </>
+    )}
+    {tool.slug === 'watermark' && (
+      <>
+        <img src="/assets/demo/src-pixdemo.jpg" alt="加水印示例图片" loading="lazy">
+        <div class="wm-overlay" aria-hidden="true">
+          <span>© 示例</span><span>© 示例</span><span>© 示例</span>
+          <span>© 示例</span><span>© 示例</span><span>© 示例</span>
+          <span>© 示例</span><span>© 示例</span><span>© 示例</span>
+        </div>
+        <span class="demo-label">平铺水印</span>
+      </>
+    )}
+    {tool.slug === 'filters' && (
+      <>
+        <div class="filmstrip">
+          <img src="/assets/demo/filters-original.jpg" alt="原图" loading="lazy">
+          <img src="/assets/demo/filters-gray.jpg" alt="黑白滤镜" loading="lazy">
+          <img src="/assets/demo/filters-sepia.jpg" alt="复古滤镜" loading="lazy">
+        </div>
+        <span class="demo-label">5 组预设</span>
+      </>
+    )}
+  </div>
+
+  <div class="card-body">
+    <h2 class="card-title">{tool.cardTitle}</h2>
+    <p class="card-desc">{tool.cardDesc}</p>
+    {featured && <span class="card-cta">打开工具 <span aria-hidden="true">→</span></span>}
+    <div class="card-meta"><span>{tool.category} · {tool.metric}</span><span class="arrow">→</span></div>
+  </div>
+</a>

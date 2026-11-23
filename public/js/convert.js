@@ -3,9 +3,11 @@ let currentBlob = null;
 let currentExt = 'webp';
 let cachedImg = null;
 let origSize = 0;
+let origName = 'image';
 
 async function handleFile(file) {
   clearError();
+  origName = file.name;
   origSize = file.size;
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('workArea').classList.remove('hidden');
@@ -55,7 +57,7 @@ document.getElementById('quality').addEventListener('input', () => {
   clearError(); convert();
 });
 document.getElementById('btnExport').addEventListener('click', () => {
-  if (currentBlob) download(currentBlob, swapExt('converted', currentExt));
+  if (currentBlob) download(currentBlob, swapExt(origName, currentExt));
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);

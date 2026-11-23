@@ -3,9 +3,11 @@ let currentBlob = null;
 let currentExt = 'png';
 let cachedImg = null;
 let origSize = 0;
+let origName = 'image';
 
 async function handleFile(file) {
   clearError();
+  origName = file.name;
   origSize = file.size;
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('workArea').classList.remove('hidden');
@@ -80,7 +82,7 @@ document.getElementById('percent').addEventListener('input', () => {
   document.getElementById(id).addEventListener('change', () => { clearError(); resize(); })
 );
 document.getElementById('btnExport').addEventListener('click', () => {
-  if (currentBlob) download(currentBlob, swapExt('resized', currentExt));
+  if (currentBlob) download(currentBlob, swapExt(origName, currentExt));
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);

@@ -1,15 +1,20 @@
 ---
 import { TOOLS } from '../data/tools';
-const navTools = TOOLS.filter((t) => ['removebg', 'compress', 'convert', 'resize', 'nine-grid', 'watermark'].includes(t.slug));
----
 
+const path = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
+const nav = TOOLS.map((t) => ({ ...t, href: `/${t.slug}` }));
+---
 <header class="site-header">
   <div class="container header-inner">
-    <a href="/" class="logo"><span class="logo-mark">▦</span> PixTools<span class="logo-sub">图片工具箱</span></a>
-    <nav class="nav">
-      {navTools.map((t) => (
-        <a href={`/${t.slug}`}>{t.name.split(' ')[0].replace('在线', '').replace('AI ', '') || t.name}</a>
+    <a href="/" class="brand" aria-label="PixTools · 图片工具首页">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h10l6 6v10H4z" fill="none" stroke="currentColor" stroke-width="1.7"/><rect x="8" y="10" width="6" height="6" fill="currentColor"/></svg>
+      PixTools<span class="brand-sub">图片工具</span>
+    </a>
+    <nav class="nav" aria-label="全部工具">
+      {nav.map((t) => (
+        <a href={t.href} aria-current={path === t.href ? 'page' : undefined}>{t.navLabel}</a>
       ))}
     </nav>
+    <span class="header-local"><span class="dot"></span>本地处理</span>
   </div>
 </header>

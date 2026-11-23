@@ -3,41 +3,68 @@ import ToolLayout from '../layouts/ToolLayout.astro';
 ---
 
 <ToolLayout slug="nine-grid">
-  <div slot="blurb">把一张大图一键切成 3×3 九宫格,朋友圈、小红书、Instagram 发图拼出完整大图效果。支持 2×2、3×3、4×4 网格,全部在浏览器本地完成,图片不上传服务器。</div>
+  <section slot="hero" class="tool-hero">
+    <div class="tool-hero__copy">
+      <h1>九宫格切图，<br>一张大图切成九格。</h1>
+      <p class="tool-benefit">把一张大图一键切成 2×2、3×3 或 4×4 网格，发朋友圈、小红书时拼回完整大图。全部在浏览器本地完成，图片不上传。</p>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dropzone__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v4h14v-4"/></svg>
+        </span>
+        <span class="dropzone__main">
+          <b>点击选择图片，或拖到这里</b>
+          <span>JPG / PNG / WebP · 推荐正方形大图</span>
+        </span>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+      <p class="tool-note">2×2 / 3×3 / 4×4 · ZIP 下载 · 0 上传</p>
+    </div>
 
-  <div class="dropzone hidden-after-upload" id="dropzone">
-    <div class="dropzone-icon">🖼</div>
-    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
-    <div class="dropzone-sub">JPG / PNG / WebP · 推荐正方形大图</div>
-    <input type="file" id="fileInput" accept="image/*">
+    <div class="demo-stage stage-nine">
+      <span class="stage-note">示例 · 3 × 3</span>
+      <div class="grid-tabs"><span>2×2</span><span class="on">3×3</span><span>4×4</span></div>
+      <img src="/assets/demo/nine-grid.jpg" alt="九宫格切图示例：一张花田图切成九块" loading="lazy">
+    </div>
+  </section>
+
+  <section class="work-section hidden" id="workArea">
+    <div class="work-head"><h2>切图设置</h2><div class="work-head-actions"><span>本地处理 · 0 上传</span><button class="btn btn-secondary btn-sm" type="button" data-reset>换一张</button></div></div>
+<div class="work-grid stack">
+        <div class="controls">
+          <div class="control">
+            <label for="grid">网格</label>
+            <select id="grid">
+              <option value="3">3×3 九宫格</option>
+              <option value="2">2×2 四宫格</option>
+              <option value="4">4×4 十六格</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="outFmt">输出格式</label>
+            <select id="outFmt">
+              <option value="image/png">PNG</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/webp">WebP</option>
+            </select>
+          </div>
+          <div class="controls-actions">
+            <button class="btn btn-primary" id="btnZip">下载全部（ZIP）</button>
+          </div>
+        </div>
+        <div class="compare-box">
+          <h3>切图结果预览</h3>
+          <div class="grid-preview" id="gridPreview"></div>
+          <div class="compare-meta" id="metaResult"></div>
+        </div>
+      </div>
+  </section>
+
+  <div class="steps">
+    <div class="step"><span class="n">01</span><div><b>放入图片</b><p>推荐 1:1 正方形大图，切完每张不会被压扁。</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>选网格</b><p>2×2、3×3、4×4，预览实时更新。</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>打包下载</b><p>一键导出 ZIP，按顺序发就能拼回大图。</p></div></div>
   </div>
 
-  <div class="work-area hidden" id="workArea">
-    <div class="controls">
-      <div class="control">
-        <label for="grid">网格</label>
-        <select id="grid">
-          <option value="3">3×3 九宫格(推荐)</option>
-          <option value="2">2×2 四宫格</option>
-          <option value="4">4×4 十六格</option>
-        </select>
-      </div>
-      <div class="control">
-        <label for="outFmt">输出格式</label>
-        <select id="outFmt">
-          <option value="image/png">PNG</option>
-          <option value="image/jpeg">JPG</option>
-          <option value="image/webp">WebP</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="btnZip">⬇ 下载全部(ZIP)</button>
-    </div>
-    <div class="compare-box" style="margin-bottom:16px">
-      <h3>切图结果预览</h3>
-      <div id="gridPreview" style="display:grid;gap:4px;background:#f1f5f9;padding:8px;border-radius:8px"></div>
-      <div class="compare-meta" id="metaResult"></div>
-    </div>
-  </div>
   <script is:inline src="/js/common.js"></script>
   <script is:inline src="/js/nine-grid.js"></script>
 </ToolLayout>

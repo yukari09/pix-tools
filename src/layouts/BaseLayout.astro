@@ -7,11 +7,11 @@ interface Props {
   title: string;
   description: string;
   canonical: string;
-  jsonLd?: object[];       // 页面的附加结构化数据 (自动并入 WebApplication/Breadcrumb 等)
+  jsonLd?: object[];
   noindex?: boolean;
+  accent?: string;
 }
-
-const { title, description, canonical, jsonLd = [], noindex = false } = Astro.props;
+const { title, description, canonical, jsonLd = [], noindex = false, accent = '#E4442A' } = Astro.props;
 const url = SITE.domain + canonical;
 ---
 
@@ -24,13 +24,21 @@ const url = SITE.domain + canonical;
   <meta name="description" content={description}>
   {noindex ? <meta name="robots" content="noindex"> : <meta name="robots" content="index,follow">}
   <link rel="canonical" href={url}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#F6F7F5">
   <meta property="og:type" content="website">
   <meta property="og:title" content={title.replace(' | PixTools', '')}>
   <meta property="og:description" content={description}>
   <meta property="og:url" content={url}>
   <meta property="og:site_name" content={SITE.name}>
   <meta property="og:locale" content="zh_CN">
-  <meta name="twitter:card" content="summary">
+  <meta property="og:image" content={SITE.domain + '/assets/og-cover.png'}>
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="PixTools 图片工具箱：抠图、压缩、转格式、缩放、九宫格、水印、滤镜，全部在浏览器本地完成，图片不出本机。">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content={SITE.domain + '/assets/og-cover.png'}>
+  <meta name="twitter:image:alt" content="PixTools 图片工具箱：抠图、压缩、转格式、缩放、九宫格、水印、滤镜，全部在浏览器本地完成，图片不出本机。">
   <link rel="stylesheet" href="/css/style.css">
   {jsonLd.map((obj) => <script type="application/ld+json" set:html={JSON.stringify(obj)}></script>)}
   <!-- Privacy-friendly analytics -->
@@ -38,7 +46,8 @@ const url = SITE.domain + canonical;
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8834563225975418" crossorigin="anonymous"></script>
 </head>
-<body>
+<body style={`--accent:${accent}`}>
+  <a class="skip" href="#main">跳到正文</a>
   <Header />
   <slot />
   <Footer />

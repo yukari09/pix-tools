@@ -3,59 +3,96 @@ import ToolLayout from '../layouts/ToolLayout.astro';
 ---
 
 <ToolLayout slug="filters">
-  <div slot="blurb">调节亮度、对比度、饱和度,一键黑白、复古、模糊、反色效果。实时预览,本地处理不上传服务器。</div>
-
-  <div class="dropzone hidden-after-upload" id="dropzone">
-    <div class="dropzone-icon">🖼</div>
-    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
-    <div class="dropzone-sub">JPG / PNG / WebP</div>
-    <input type="file" id="fileInput" accept="image/*">
-  </div>
-
-  <div class="work-area hidden" id="workArea">
-    <div class="controls">
-      <div class="control">
-        <label for="brightness">亮度 <span id="brightnessVal">0</span></label>
-        <input type="range" id="brightness" min="-100" max="100" value="0">
+  <section slot="hero" class="tool-hero">
+    <div class="tool-hero__copy">
+      <h1>在线图片滤镜，<br>先把颜色调对。</h1>
+      <p class="tool-benefit">调节亮度、对比度、饱和度，一键黑白、复古、反色、鲜艳、褪色。实时预览，PNG 导出，本地处理。</p>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dropzone__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v4h14v-4"/></svg>
+        </span>
+        <span class="dropzone__main">
+          <b>点击选择图片，或拖到这里</b>
+          <span>JPG / PNG / WebP · 图片不离开本机</span>
+        </span>
+        <input type="file" id="fileInput" accept="image/*">
       </div>
-      <div class="control">
-        <label for="contrast">对比度 <span id="contrastVal">0</span></label>
-        <input type="range" id="contrast" min="-100" max="100" value="0">
-      </div>
-      <div class="control">
-        <label for="saturate">饱和度 <span id="saturateVal">0</span></label>
-        <input type="range" id="saturate" min="-100" max="100" value="0">
-      </div>
-      <div class="control">
-        <label for="blur">模糊 <span id="blurVal">0</span>px</label>
-        <input type="range" id="blur" min="0" max="20" value="0">
-      </div>
-      <div class="control">
-        <label for="preset">一键预设</label>
-        <select id="preset">
-          <option value="">自定义</option>
-          <option value="grayscale">黑白</option>
-          <option value="sepia">复古</option>
-          <option value="invert">反色</option>
-          <option value="vivid">鲜艳</option>
-          <option value="fade">褪色</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="btnExport">⬇ 导出图片</button>
+      <p class="tool-note">5 组预设 · 实时预览 · 0 上传</p>
     </div>
-    <div class="compare">
-      <div class="compare-box">
-        <h3>原图</h3>
-        <img id="previewOrig" alt="原图">
-        <div class="compare-meta" id="metaOrig"></div>
+
+    <div class="demo-stage stage-filters">
+      <span class="stage-note">示例 · 5 组预设</span>
+      <div class="big">
+        <img src="/assets/demo/filters-sepia.jpg" alt="复古滤镜示例" loading="lazy">
+        <span class="stage-tag">复古</span>
       </div>
-      <div class="compare-box">
-        <h3>效果预览</h3>
-        <img id="previewResult" alt="滤镜预览">
-        <div class="compare-meta" id="metaResult"></div>
+      <div class="filter-strip">
+        <div class="cell"><img src="/assets/demo/filters-original.jpg" alt="原图" loading="lazy"><span>原图</span></div>
+        <div class="cell"><img src="/assets/demo/filters-gray.jpg" alt="黑白滤镜" loading="lazy"><span>黑白</span></div>
+        <div class="cell"><img src="/assets/demo/filters-sepia.jpg" alt="复古滤镜" loading="lazy"><span>复古</span></div>
+        <div class="cell"><img src="/assets/demo/filters-vivid.jpg" alt="鲜艳滤镜" loading="lazy"><span>鲜艳</span></div>
+        <div class="cell"><img src="/assets/demo/filters-invert.jpg" alt="反色滤镜" loading="lazy"><span>反色</span></div>
+        <div class="cell"><img src="/assets/demo/filters-fade.jpg" alt="褪色滤镜" loading="lazy"><span>褪色</span></div>
       </div>
     </div>
+  </section>
+
+  <section class="work-section hidden" id="workArea">
+    <div class="work-head"><h2>调色设置</h2><div class="work-head-actions"><span>本地处理 · 0 上传</span><button class="btn btn-secondary btn-sm" type="button" data-reset>换一张</button></div></div>
+<div class="work-grid">
+        <div class="controls">
+          <div class="control">
+            <label for="brightness">亮度 <span id="brightnessVal">0</span></label>
+            <input type="range" id="brightness" min="-100" max="100" value="0">
+          </div>
+          <div class="control">
+            <label for="contrast">对比度 <span id="contrastVal">0</span></label>
+            <input type="range" id="contrast" min="-100" max="100" value="0">
+          </div>
+          <div class="control">
+            <label for="saturate">饱和度 <span id="saturateVal">0</span></label>
+            <input type="range" id="saturate" min="-100" max="100" value="0">
+          </div>
+          <div class="control">
+            <label for="blur">模糊 <span id="blurVal">0</span>px</label>
+            <input type="range" id="blur" min="0" max="20" value="0">
+          </div>
+          <div class="control">
+            <label for="preset">一键预设</label>
+            <select id="preset">
+              <option value="">自定义</option>
+              <option value="grayscale">黑白</option>
+              <option value="sepia">复古</option>
+              <option value="invert">反色</option>
+              <option value="vivid">鲜艳</option>
+              <option value="fade">褪色</option>
+            </select>
+          </div>
+          <div class="controls-actions">
+            <button class="btn btn-primary" id="btnExport">导出图片</button>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-box">
+            <h3>原图</h3>
+            <img id="previewOrig" src="/assets/demo/filters-original.jpg" alt="原图">
+            <div class="compare-meta" id="metaOrig"></div>
+          </div>
+          <div class="compare-box">
+            <h3>效果预览</h3>
+            <img id="previewResult" src="/assets/demo/filters-original.jpg" alt="滤镜预览">
+            <div class="compare-meta" id="metaResult"></div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <div class="steps">
+    <div class="step"><span class="n">01</span><div><b>放入图片</b><p>照片、头像、产品图都可以，文件不上传。</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>选预设或调滑块</b><p>黑白、复古、反色、鲜艳、褪色，也可以自己调四项参数。</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>导出 PNG</b><p>无损导出，适合继续编辑或直接发。</p></div></div>
   </div>
+
   <script is:inline src="/js/common.js"></script>
   <script is:inline src="/js/filters.js"></script>
 </ToolLayout>

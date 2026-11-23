@@ -102,8 +102,11 @@ async function render() {
     scheduleRender();
   });
   el.addEventListener('change', () => {
-    document.getElementById('textCtrl').classList.toggle('hidden', id === 'wmType' && el.value !== 'text');
-    document.getElementById('logoCtrl').classList.toggle('hidden', id === 'wmType' && el.value !== 'logo');
+    if (id === 'wmType') {
+      const isText = el.value === 'text';
+      document.getElementById('textCtrl').classList.toggle('hidden', !isText);
+      document.getElementById('logoCtrl').classList.toggle('hidden', isText);
+    }
     scheduleRender();
   });
 });

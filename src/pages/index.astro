@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ToolCard from '../components/ToolCard.astro';
 import { SITE, TOOLS, HOT_TERMS } from '../data/tools';
 
 const jsonLd = [
@@ -8,9 +9,19 @@ const jsonLd = [
     '@type': 'WebSite',
     name: SITE.name,
     url: SITE.domain + '/',
-    description: '免费在线图片处理工具:AI 抠图、九宫格切图、图片压缩、格式转换、缩放、加水印、滤镜。全部浏览器本地处理,图片不上传服务器。',
+    description: '免费在线图片处理工具：AI 抠图、九宫格切图、图片压缩、格式转换、缩放、加水印、滤镜。全部浏览器本地处理，图片不上传服务器。',
     inLanguage: 'zh-CN',
-    publisher: { '@type': 'Organization', name: SITE.name },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.name,
+      url: SITE.domain + '/',
+      logo: {
+        '@type': 'ImageObject',
+        url: SITE.domain + '/assets/logo-512.png',
+        width: 512,
+        height: 512,
+      },
+    },
   },
   {
     '@context': 'https://schema.org',
@@ -24,52 +35,107 @@ const jsonLd = [
     })),
   },
 ];
+
+const categories = ['全部', '抠图', '优化', '转换', '编辑'];
 ---
 
 <BaseLayout
   title="PixTools 图片工具箱 — 免费在线图片压缩、抠图、九宫格、格式转换"
-  description="免费在线图片处理工具:AI 一键抠图、九宫格切图、图片压缩、格式转换、缩放、加水印、滤镜。全部在浏览器本地完成,图片不上传服务器,保护隐私。"
+  description="免费在线图片处理工具：AI 一键抠图、九宫格切图、图片压缩、格式转换、缩放、加水印、滤镜。全部在浏览器本地完成，图片不上传服务器，保护隐私。"
   canonical="/"
   jsonLd={jsonLd}
 >
-  <main class="container">
-    <section class="hero">
-      <h1>免费在线图片工具箱</h1>
-      <p class="hero-sub">AI 抠图 · 压缩 · 格式转换 · 缩放 · 九宫格 · 水印 · 滤镜</p>
-      <p class="hero-desc">所有处理都在你的浏览器本地完成,<strong>图片不会上传到任何服务器</strong>。无账号、无限制、完全免费。</p>
-    </section>
+  <main id="main" tabindex="-1">
+    <div class="container">
+      <section class="home-hero">
+        <div>
+          <h1>免费在线图片工具箱</h1>
+          <p class="home-line">图片不出本机。</p>
+          <p class="home-sub">抠图、压缩、转格式、缩放、九宫格、加水印、滤镜。七种处理都在浏览器里完成，<strong>免费、无账号、无水印</strong>。</p>
+          <p class="mobile-local"><span class="dot"></span>运行状态 · 0 上传 · 0 账号</p>
+        </div>
+        <aside class="hero-spec" aria-label="本地处理状态">
+          <div class="top"><span>运行状态 / LOCAL</span><span class="stamp">0 上传</span></div>
+          <div class="spec-row"><span>处理位置</span><span>浏览器内</span></div>
+          <div class="spec-row"><span>上传</span><span>无</span></div>
+          <div class="spec-row"><span>账号</span><span>不需要</span></div>
+          <div class="spec-row"><span>次数</span><span>不限</span></div>
+          <div class="spec-row"><span>费用</span><span>免费</span></div>
+        </aside>
+      </section>
 
-    <section class="tool-grid">
-      {TOOLS.map((t) => (
-        <a href={`/${t.slug}`} class="tool-card">
-          {t.hotTag && <span class="tool-tag">{t.hotTag}</span>}
-          <div class="tool-icon" style={`background:${t.iconBg};color:${t.iconColor}`}>{t.icon}</div>
-          <h2 class="tool-name">{t.cardTitle}</h2>
-          <p class="tool-desc">{t.cardDesc}</p>
-        </a>
-      ))}
-    </section>
+      <div class="filter-bar">
+        <div class="filter-btns" role="group" aria-label="按类别筛选工具">
+          {categories.map((c, i) => (
+            <button class="filter-btn" data-filter={c} aria-pressed={i === 0 ? 'true' : 'false'}>{c}</button>
+          ))}
+        </div>
+        <span class="filter-count" id="toolCount">{TOOLS.length} 个工具</span>
+      </div>
 
-    <section class="hot-searches">
-      <h2>热门图片工具</h2>
-      <div class="hot-chips">
-        {HOT_TERMS.map(([label, href]) => <a href={href}>{label}</a>)}
-      </div>
-    </section>
+      <section class="tool-grid" aria-label="全部工具">
+        {TOOLS.map((t) => <ToolCard tool={t} featured={t.slug === 'removebg'} />)}
+      </section>
 
-    <section class="features">
-      <div class="feature">
-        <h3>🔒 隐私安全</h3>
-        <p>图片全程不离开你的设备,服务器零接触,放心处理敏感图片。</p>
-      </div>
-      <div class="feature">
-        <h3>⚡ 免费无限制</h3>
-        <p>不注册、不登录、无水印,处理次数和文件大小完全开放。</p>
-      </div>
-      <div class="feature">
-        <h3>🌍 随处可用</h3>
-        <p>任何现代浏览器直接打开即用,手机电脑都支持,无需安装。</p>
-      </div>
-    </section>
+      <section class="proof">
+        <div>
+          <h2>文件没有离开<br>这台设备。</h2>
+          <p>从打开到导出，图片只在你的浏览器里被读取和编码。没有上传队列，没有服务器临时文件，也没有「30 分钟后删除」的承诺。</p>
+        </div>
+        <div class="proof-spec" aria-label="本地处理参数">
+          <div class="spec-row"><span>上传</span><span>0 次</span></div>
+          <div class="spec-row"><span>账号</span><span>0 个</span></div>
+          <div class="spec-row"><span>水印</span><span>0 个</span></div>
+          <div class="spec-row"><span>处理限制</span><span>无</span></div>
+          <div class="spec-row"><span>数据留存</span><span>无</span></div>
+        </div>
+      </section>
+
+      <section class="hot-index">
+        <h2>常用入口</h2>
+        <div class="hot-terms">
+          {HOT_TERMS.map(([label, href], i) => (
+            <span class="hot-item"><a href={href}>{label}</a>{i < HOT_TERMS.length - 1 && <span class="hot-sep" aria-hidden="true">·</span>}</span>
+          ))}
+        </div>
+      </section>
+    </div>
   </main>
+
+  <script is:inline>
+    const buttons = document.querySelectorAll('.filter-btn');
+    const cards = document.querySelectorAll('.tool-card');
+    const grid = document.querySelector('.tool-grid');
+    const count = document.getElementById('toolCount');
+
+    const applyFilter = (filter) => {
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.filter === filter)));
+      let visible = 0;
+      cards.forEach((card) => {
+        const show = filter === '全部' || card.dataset.category === filter;
+        card.classList.toggle('is-hidden', !show);
+        if (show) visible += 1;
+      });
+      if (grid) {
+        grid.classList.toggle('is-filtered', filter !== '全部');
+        grid.classList.remove('vis-1', 'vis-2', 'vis-3', 'vis-4');
+        if (filter !== '全部') grid.classList.add('vis-' + Math.min(visible, 4));
+      }
+      if (count) count.textContent = visible + ' 个工具';
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        applyFilter(filter);
+        history.replaceState(null, '', filter === '全部' ? '/' : '/?cat=' + encodeURIComponent(filter));
+      });
+    });
+
+    const requested = new URLSearchParams(window.location.search).get('cat');
+    if (requested) {
+      const match = [...buttons].find((b) => b.dataset.filter === requested);
+      if (match) applyFilter(requested);
+    }
+  </script>
 </BaseLayout>

@@ -1,10 +1,17 @@
 ---
-import { RELATED_LINKS } from '../data/tools';
----
+import { TOOLS } from '../data/tools';
 
+interface Props {
+  current?: string;
+}
+const { current } = Astro.props;
+const others = TOOLS.filter((t) => t.slug !== current);
+---
 <div class="related">
-  <h2>你可能还需要</h2>
+  <h2>接着做下一件事</h2>
   <div class="related-links">
-    {RELATED_LINKS.map(([label, href]) => <a href={href}>{label}</a>)}
+    {others.map((t) => (
+      <a href={`/${t.slug}`} style={`--accent:${t.accent}`}><i></i>{t.name}</a>
+    ))}
   </div>
 </div>

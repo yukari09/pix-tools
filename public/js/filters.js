@@ -1,10 +1,12 @@
 // PixTools 滤镜工具
 let cachedImg = null;
+let origName = 'image';
 let currentBlob = null;
 let rendering = false;
 
 async function handleFile(file) {
   clearError();
+  origName = file.name;
   document.getElementById('dropzone').classList.add('hidden');
   document.getElementById('workArea').classList.remove('hidden');
   const img = await loadImage(file);
@@ -64,7 +66,7 @@ async function render() {
     document.getElementById('metaResult').textContent = `PNG · ${fmtBytes(currentBlob.size)}`;
   } catch (e) {
     console.error(e);
-    showError('滤镜处理失败:' + (e.message || e));
+    showError('滤镜处理失败：' + (e.message || e));
   } finally {
     document.getElementById('statusBar').style.width = '100%';
     setTimeout(() => status.classList.remove('show'), 300);
@@ -87,7 +89,7 @@ document.getElementById('preset').addEventListener('change', () => {
   clearError(); render();
 });
 document.getElementById('btnExport').addEventListener('click', () => {
-  if (currentBlob) download(currentBlob, swapExt('filtered', 'png'));
+  if (currentBlob) download(currentBlob, swapExt(origName, 'png'));
 });
 
 setupDropzone('dropzone', 'fileInput', handleFile);

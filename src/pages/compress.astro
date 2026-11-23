@@ -3,44 +3,84 @@ import ToolLayout from '../layouts/ToolLayout.astro';
 ---
 
 <ToolLayout slug="compress">
-  <div slot="blurb">压缩 JPG / PNG / WebP 图片,实时预览压缩前后大小。可导出 WebP(体积最小)或 JPG。全部在你浏览器本地完成,图片不上传服务器。</div>
-
-  <div class="dropzone hidden-after-upload" id="dropzone">
-    <div class="dropzone-icon">🖼</div>
-    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
-    <div class="dropzone-sub">JPG / PNG / WebP / GIF</div>
-    <input type="file" id="fileInput" accept="image/*">
-  </div>
-
-  <div class="work-area hidden" id="workArea">
-    <div class="controls">
-      <div class="control">
-        <label for="quality">压缩质量 <span id="qualityVal">75</span>%</label>
-        <input type="range" id="quality" min="5" max="100" value="75">
+  <section slot="hero" class="tool-hero">
+    <div class="tool-hero__copy">
+      <h1>在线图片压缩，<br>压到能发出去。</h1>
+      <p class="tool-benefit">压缩 JPG / PNG / WebP，质量从 5% 到 100% 自己定。压缩前后体积同屏对比，全部在浏览器本地完成。</p>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dropzone__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v4h14v-4"/></svg>
+        </span>
+        <span class="dropzone__main">
+          <b>点击选择图片，或拖到这里</b>
+          <span>JPG / PNG / WebP · 图片不离开本机</span>
+        </span>
+        <input type="file" id="fileInput" accept="image/*">
       </div>
-      <div class="control">
-        <label for="format">输出格式</label>
-        <select id="format">
-          <option value="image/webp">WebP(体积最小)</option>
-          <option value="image/jpeg">JPG</option>
-          <option value="image/png">PNG(原样大小)</option>
-        </select>
-      </div>
-      <button class="btn btn-primary" id="btnExport">⬇ 导出压缩图</button>
+      <p class="tool-note">JPG / PNG / WebP · 质量 5–100 · 0 上传</p>
     </div>
-    <div class="compare">
-      <div class="compare-box">
-        <h3>原图</h3>
-        <img id="previewOrig" alt="原图">
-        <div class="compare-meta" id="metaOrig"></div>
+
+    <div class="demo-stage stage-compress">
+      <span class="stage-note">示例 · 同一张图，只减体积</span>
+      <div class="file-stack">
+        <div class="file-card">
+          <div><div class="fc-label">原图 · JPG</div><div class="fc-name">spring.jpg</div></div>
+          <div class="fc-size">154 KB</div>
+        </div>
+        <div class="file-card after">
+          <div><div class="fc-label">压缩后 · WebP 75%</div><div class="fc-name">spring.webp</div></div>
+          <div class="fc-size">111 KB</div>
+        </div>
       </div>
-      <div class="compare-box">
-        <h3>压缩后</h3>
-        <img id="previewResult" alt="压缩后">
-        <div class="compare-meta" id="metaResult"></div>
+      <div class="format-chips"><span>WebP</span><span>JPG</span><span>PNG</span><span>质量 5–100</span></div>
+      <div>
+        <div class="delta"><b>−28%</b><span>体积减少，画面尺寸不变</span></div>
+        <div class="rail-visual"><i></i></div>
       </div>
     </div>
+  </section>
+
+  <section class="work-section hidden" id="workArea">
+    <div class="work-head"><h2>压缩设置</h2><div class="work-head-actions"><span>本地处理 · 0 上传</span><button class="btn btn-secondary btn-sm" type="button" data-reset>换一张</button></div></div>
+<div class="work-grid">
+        <div class="controls">
+          <div class="control">
+            <label for="quality">压缩质量 <span id="qualityVal">75</span>%</label>
+            <input type="range" id="quality" min="5" max="100" value="75">
+          </div>
+          <div class="control">
+            <label for="format">输出格式</label>
+            <select id="format">
+              <option value="image/webp">WebP（体积最小）</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/png">PNG（无损）</option>
+            </select>
+          </div>
+          <div class="controls-actions">
+            <button class="btn btn-primary" id="btnExport">导出压缩图</button>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-box">
+            <h3>原图</h3>
+            <img id="previewOrig" src="/assets/demo/compress-before.jpg" alt="原图">
+            <div class="compare-meta" id="metaOrig"></div>
+          </div>
+          <div class="compare-box">
+            <h3>压缩后</h3>
+            <img id="previewResult" src="/assets/demo/compress-after.webp" alt="压缩后">
+            <div class="compare-meta" id="metaResult"></div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <div class="steps">
+    <div class="step"><span class="n">01</span><div><b>放入图片</b><p>JPG、PNG、WebP 都可以，文件不上传。</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>调质量与格式</b><p>默认 75% WebP，体积和画质平衡点。</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>导出</b><p>下载压缩后的文件，原图保留不动。</p></div></div>
   </div>
+
   <script is:inline src="/js/common.js"></script>
   <script is:inline src="/js/compress.js"></script>
 </ToolLayout>

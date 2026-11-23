@@ -3,44 +3,82 @@ import ToolLayout from '../layouts/ToolLayout.astro';
 ---
 
 <ToolLayout slug="convert">
-  <div slot="blurb">PNG、JPG、WebP 三种格式一键互转:WebP 转 JPG(兼容老软件)、JPG 转 PNG(透明底需求)、任意转 WebP(体积最小)。本地转换,图片不上传服务器。</div>
+  <section slot="hero" class="tool-hero">
+    <div class="tool-hero__copy">
+      <h1>图片格式转换，<br>只换容器不动画面。</h1>
+      <p class="tool-benefit">PNG、JPG、WebP 三种格式一键互转。WebP 转 JPG 兼容老软件，JPG 转 PNG 满足透明底需求，任意转 WebP 体积最小。</p>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
+        <span class="dropzone__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 15v4h14v-4"/></svg>
+        </span>
+        <span class="dropzone__main">
+          <b>点击选择图片，或拖到这里</b>
+          <span>PNG / JPG / WebP · 图片不离开本机</span>
+        </span>
+        <input type="file" id="fileInput" accept="image/*">
+      </div>
+      <p class="tool-note">PNG / JPG / WebP · 尺寸不变 · 0 上传</p>
+    </div>
 
-  <div class="dropzone hidden-after-upload" id="dropzone">
-    <div class="dropzone-icon">🖼</div>
-    <div class="dropzone-text">点击选择图片或拖拽图片到此处</div>
-    <div class="dropzone-sub">PNG / JPG / WebP</div>
-    <input type="file" id="fileInput" accept="image/*">
+    <div class="demo-stage stage-convert">
+      <span class="stage-note">示例 · 格式切换</span>
+      <div class="format-row">
+        <div class="format-card">
+          <div class="ext">JPG</div>
+          <div class="fmt">123 KB · 兼容老软件</div>
+        </div>
+        <div class="format-arrow" aria-hidden="true">→</div>
+        <div class="format-card target">
+          <div class="ext">WEBP</div>
+          <div class="fmt">109 KB · 体积更小</div>
+        </div>
+      </div>
+      <div class="format-chips"><span>PNG</span><span>JPG</span><span>WEBP</span><span>高质量编码</span></div>
+      <div class="convert-facts"><div><span>像素尺寸</span><b>900 × 600</b></div><div><span>透明通道</span><b>格式支持</b></div><div><span>体积（示例）</span><b>123 KB → 109 KB</b></div></div>
+    </div>
+  </section>
+
+  <section class="work-section hidden" id="workArea">
+    <div class="work-head"><h2>转换设置</h2><div class="work-head-actions"><span>本地处理 · 0 上传</span><button class="btn btn-secondary btn-sm" type="button" data-reset>换一张</button></div></div>
+<div class="work-grid">
+        <div class="controls">
+          <div class="control">
+            <label for="target">目标格式</label>
+            <select id="target">
+              <option value="image/webp">WebP</option>
+              <option value="image/jpeg">JPG</option>
+              <option value="image/png">PNG</option>
+            </select>
+          </div>
+          <div class="control">
+            <label for="quality">JPG / WebP 质量 <span id="qualityVal">90</span>%</label>
+            <input type="range" id="quality" min="30" max="100" value="90">
+          </div>
+          <div class="controls-actions">
+            <button class="btn btn-primary" id="btnExport">导出转换图</button>
+          </div>
+        </div>
+        <div class="compare">
+          <div class="compare-box">
+            <h3>原图</h3>
+            <img id="previewOrig" src="/assets/demo/convert-source-small.jpg" alt="原图">
+            <div class="compare-meta" id="metaOrig"></div>
+          </div>
+          <div class="compare-box">
+            <h3>转换后</h3>
+            <img id="previewResult" src="/assets/demo/convert-source-small.jpg" alt="转换后">
+            <div class="compare-meta" id="metaResult"></div>
+          </div>
+        </div>
+      </div>
+  </section>
+
+  <div class="steps">
+    <div class="step"><span class="n">01</span><div><b>放入图片</b><p>任意 PNG / JPG / WebP，直接在浏览器里读取。</p></div></div>
+    <div class="step"><span class="n">02</span><div><b>选目标格式</b><p>要兼容选 JPG，要透明选 PNG，要体积选 WebP。</p></div></div>
+    <div class="step"><span class="n">03</span><div><b>导出</b><p>像素尺寸与内容不变，只换编码容器。</p></div></div>
   </div>
 
-  <div class="work-area hidden" id="workArea">
-    <div class="controls">
-      <div class="control">
-        <label for="target">转换目标格式</label>
-        <select id="target">
-          <option value="image/webp">WebP</option>
-          <option value="image/jpeg">JPG</option>
-          <option value="image/png">PNG</option>
-        </select>
-      </div>
-      <div class="control">
-        <label for="quality">JPG/WebP 质量 <span id="qualityVal">90</span>%</label>
-        <input type="range" id="quality" min="30" max="100" value="90">
-      </div>
-      <button class="btn btn-primary" id="btnExport">⬇ 导出转换图</button>
-    </div>
-    <div class="compare">
-      <div class="compare-box">
-        <h3>原图</h3>
-        <img id="previewOrig" alt="原图">
-        <div class="compare-meta" id="metaOrig"></div>
-      </div>
-      <div class="compare-box">
-        <h3>转换后</h3>
-        <img id="previewResult" alt="转换后">
-        <div class="compare-meta" id="metaResult"></div>
-      </div>
-    </div>
-  </div>
   <script is:inline src="/js/common.js"></script>
   <script is:inline src="/js/convert.js"></script>
 </ToolLayout>
