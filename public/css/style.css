@@ -467,5 +467,9 @@ button { cursor:pointer; }
 .ad-slot { margin:46px 0 0; }
 .ad-label { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--muted); margin-bottom:8px; }
 .ad-slot ins { display:block; }
-ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; }
-.ad-slot:has(ins[data-ad-status="unfilled"]) { display:none; }
+ins.adsbygoogle[data-ad-status="unfilled"],
+ins.adsbygoogle[data-ad-status="unfill-optimized"],
+ins.adsbygoogle[data-ad-status="unfill"] { display:none !important; }
+.ad-slot:has(ins[data-ad-status="unfilled"]),
+.ad-slot:has(ins[data-ad-status="unfill-optimized"]),
+.ad-slot:has(ins[data-ad-status="unfill"]) { display:none; }
