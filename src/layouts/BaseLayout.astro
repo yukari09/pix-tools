@@ -51,5 +51,25 @@ const url = SITE.domain + canonical;
   <Header />
   <slot />
   <Footer />
+  <script is:inline>
+    // 广告位兜底：AdSense 偶发不写 data-ad-status（实测 390 宽会一直停在 417px 空块）。
+    // 4 秒内没 filled 就折叠；一旦之后变 filled 再显示，绝不隐藏已填充的广告。
+    (function () {
+      var boxes = document.querySelectorAll('.ad-slot');
+      Array.prototype.forEach.call(boxes, function (box) {
+        var ins = box.querySelector('ins.adsbygoogle');
+        if (!ins) return;
+        function sync() {
+          var st = ins.getAttribute('data-ad-status');
+          if (st === 'filled') box.style.display = '';
+          else if (st) box.style.display = 'none';
+        }
+        new MutationObserver(sync).observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+        setTimeout(function () {
+          if (ins.getAttribute('data-ad-status') !== 'filled') box.style.display = 'none';
+        }, 4000);
+      });
+    })();
+  </script>
 </body>
 </html>
