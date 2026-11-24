@@ -462,3 +462,10 @@ button { cursor:pointer; }
   *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
   .work-section:not(.hidden) .compare-box { animation:none; }
 }
+
+/* Manual AdSense slots */
+.ad-slot { margin:46px 0 0; }
+.ad-label { display:block; font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--muted); margin-bottom:8px; }
+.ad-slot ins { display:block; }
+ins.adsbygoogle[data-ad-status="unfilled"] { display:none !important; }
+.ad-slot:has(ins[data-ad-status="unfilled"]) { display:none; }

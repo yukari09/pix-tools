@@ -73,6 +73,12 @@ const categories = ['全部', '抠图', '优化', '转换', '编辑'];
         <span class="filter-count" id="toolCount">{TOOLS.length} 个工具</span>
       </div>
 
+      <div class="ad-slot">
+        <span class="ad-label">广告</span>
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8834563225975418" data-ad-slot="3723820257" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script is:inline>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+
       <section class="tool-grid" aria-label="全部工具">
         {TOOLS.map((t) => <ToolCard tool={t} featured={t.slug === 'removebg'} />)}
       </section>
