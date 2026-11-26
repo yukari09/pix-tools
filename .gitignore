@@ -3,3 +3,6 @@ dist/
 .astro/
 
 .impeccable/
+
+# 内部交接单，不提交
+BRIEF-*.md
